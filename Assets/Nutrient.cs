@@ -11,7 +11,7 @@ public class Nutrient : MonoBehaviour
     void Start()
     {
         NutrientsLeft = 100;
-        DrainSpeed = 5;
+        DrainSpeed = 5; 
         Unlimited = false;
     }
 
