@@ -180,7 +180,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 0cfbb2f070c80f74c9d2f752c54c17aa, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -307,8 +307,8 @@ MonoBehaviour:
   m_AssetsPPU: 8
   m_RefResolutionX: 160
   m_RefResolutionY: 90
-  m_UpscaleRT: 1
-  m_PixelSnapping: 0
+  m_UpscaleRT: 0
+  m_PixelSnapping: 1
   m_CropFrameX: 1
   m_CropFrameY: 1
   m_StretchFill: 1
