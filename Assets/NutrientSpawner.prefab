@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3618104334032622801}
-  - component: {fileID: 8693541597321300483}
+  - component: {fileID: -2019373718654329066}
   m_Layer: 0
   m_Name: NutrientSpawner
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8693541597321300483
+--- !u!114 &-2019373718654329066
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,6 +41,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2839292616248593703}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9898b7f0a209f564ea28733f0b00e35b, type: 3}
+  m_Script: {fileID: 11500000, guid: db7a196799f21324faa8f84e19269c5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BlueNutrientPrefab: {fileID: 1603321167229565898, guid: c755e5b910e0bb242af4c9373692d03d, type: 3}
+  RedNutrientPrefab: {fileID: 1603321167229565898, guid: 9c93aa1b82e2aad428baace71c90ed85, type: 3}
+  YellowNutrientPrefab: {fileID: 1603321167229565898, guid: a957e52167a528f48a2b30ac82f151c8, type: 3}
+  RockPrefab: {fileID: 1603321167229565898, guid: 5028e60e890720048a28856fedf4290f, type: 3}

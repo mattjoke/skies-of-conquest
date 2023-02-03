@@ -1,9 +1,13 @@
 fileFormatVersion: 2
-guid: 9898b7f0a209f564ea28733f0b00e35b
+guid: db7a196799f21324faa8f84e19269c5f
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - BlueNutrientPrefab: {fileID: 1603321167229565898, guid: c755e5b910e0bb242af4c9373692d03d, type: 3}
+  - RedNutrientPrefab: {fileID: 1603321167229565898, guid: 9c93aa1b82e2aad428baace71c90ed85, type: 3}
+  - YellowNutrientPrefab: {fileID: 1603321167229565898, guid: a957e52167a528f48a2b30ac82f151c8, type: 3}
+  - RockPrefab: {fileID: 1603321167229565898, guid: 5028e60e890720048a28856fedf4290f, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
