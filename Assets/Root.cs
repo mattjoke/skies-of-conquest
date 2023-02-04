@@ -6,18 +6,20 @@ using UnityEngine;
 
 public class Root : MonoBehaviour
 {
-    public Vector2 startingPos = new(0,0);
+    public GameObject root;
+
+    public Vector2 startingPos;
     private Vector2 currentPos;
     private Vector2 mousePos;
 
     private LineRenderer lineRenderer;
-
     private List<Vector2> lines = new();
     
     void Start()
     {
+        startingPos = root.transform.position;
         currentPos = startingPos;
-        lineRenderer = GetComponent<LineRenderer> ();
+        lineRenderer = gameObject.AddComponent<LineRenderer>();
     }
 
     void Update()
@@ -26,12 +28,43 @@ public class Root : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            // Check if we need to add new root or sprout a new one from existing line
+            if (Vector2.Distance(mousePos, startingPos) < 0.5f)
+            {
+                // Add new root
+                lines.Add(new Vector2(mousePos.x, mousePos.y));
+                currentPos = mousePos;
+            }
+            else
+            {
+                // Find closest line
+                var closestLine = lines.Select((line, index) => new { line, index })
+                    .OrderBy(x => Vector2.Distance(x.line, mousePos))
+                    .First();
+
+                // Check if we are close enough to the line
+                if (Vector2.Distance(mousePos, closestLine.line) < 0.5f)
+                {
+                    // Add new root
+                    lines.Add(new Vector2(mousePos.x, mousePos.y));
+                    currentPos = mousePos;
+                }
+                else
+                {
+                    // Sprout new root
+                    var newRoot = Instantiate(root, mousePos, Quaternion.identity);
+                    newRoot.GetComponent<Root>().lines = lines.Skip(closestLine.index).ToList();
+                    lines = lines.Take(closestLine.index).ToList();
+                    lines.Add(new Vector2(mousePos.x, mousePos.y));
+                    currentPos = mousePos;
+                }
+            }
         }
         if (Input.GetMouseButton(0))
         {
             mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             lineRenderer.positionCount = lines.Count + 2;
-            Debug.Log(currentPos);
             if (lines.Count == 0)
             {
                 lineRenderer.SetPosition(0, new Vector3(startingPos.x, startingPos.y, 0));
@@ -53,7 +86,6 @@ public class Root : MonoBehaviour
             mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             lines.Add(new Vector2(mousePos.x, mousePos.y));
             currentPos = mousePos;
-            Debug.Log(lines.Count);
         }
     }
 }
