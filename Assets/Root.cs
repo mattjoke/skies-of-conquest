@@ -8,7 +8,7 @@ public class Root : MonoBehaviour
 {
     public GameObject root;
 
-    public Vector2 startingPos;
+    private Vector2 startingPos;
     private Vector2 currentPos;
     private Vector2 mousePos;
 
@@ -24,10 +24,18 @@ public class Root : MonoBehaviour
 
     void Update()
     {
+        // MouseButtonDown();
+        // MouseButton();
+        // MouseButtonUp();
+        
+    }
+
+    void MouseButtonDown(){
         // Redraw all lines       
         if (Input.GetMouseButtonDown(0))
         {
             mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Debug.Log(Vector2.Distance(mousePos, startingPos));
 
             // Check if we need to add new root or sprout a new one from existing line
             if (Vector2.Distance(mousePos, startingPos) < 0.5f)
@@ -60,7 +68,11 @@ public class Root : MonoBehaviour
                     currentPos = mousePos;
                 }
             }
+            
         }
+    }
+
+    void MouseButton(){
         if (Input.GetMouseButton(0))
         {
             mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -79,7 +91,9 @@ public class Root : MonoBehaviour
             }
             lineRenderer.SetPosition(lines.Count + 1, new Vector3(mousePos.x, mousePos.y, 0));
         }
+    }
 
+    void MouseButtonUp(){
         if (Input.GetMouseButtonUp(0))
         {
             Debug.Log("RELEASE");
