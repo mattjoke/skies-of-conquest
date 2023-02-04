@@ -17,7 +17,6 @@ public class Root : MonoBehaviour
     private String direction = "none";
     private List<RootLevel> stackRoot = new();
     private GameObject ghost = null;
-    private int count = 0;
     
     void Start()
     {
@@ -35,9 +34,8 @@ public class Root : MonoBehaviour
         if (Input.GetMouseButton(0)){
             mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Transform middle = stackRoot[currentLevel - 1].GetTransformMiddle();
-            
-            if(mousePos.y < middle.position.y && mousePos.y > middle.lossyScale.y && mousePos.x > middle.position.x && mousePos.x < middle.lossyScale.x){
-                if (ghost == null || direction != "down"){
+            if(mousePos.y < middle.position.y && mousePos.y > middle.position.y - middle.lossyScale.y && mousePos.x > middle.position.x && mousePos.x < middle.position.x + middle.lossyScale.x){
+                if (ghost == null && direction != "down"){
                     // Create a "ghost" root
                     Destroy(ghost);
                     Vector2 position = middle.position;
@@ -60,9 +58,7 @@ public class Root : MonoBehaviour
             mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Transform middle = stackRoot[currentLevel - 1].GetTransformMiddle();;
             Vector2 position = middle.position;
-            if(mousePos.y < middle.position.y && mousePos.y > middle.lossyScale.y && mousePos.x > middle.position.x && mousePos.x < middle.lossyScale.x){
-            // count += 1;
-            // Debug.Log(count);
+            if(mousePos.y < middle.position.y && mousePos.y > middle.position.y - middle.lossyScale.y && mousePos.x > middle.position.x && mousePos.x < middle.position.x + middle.lossyScale.x){
                 switch(direction){
                     case "down":
                         position.y -= middle.lossyScale.y;
@@ -75,6 +71,7 @@ public class Root : MonoBehaviour
                         break;
                 }
                 direction = "none";
+                return;
             }
         }    
     }

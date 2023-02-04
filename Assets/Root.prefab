@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2200876485646911328}
   - component: {fileID: 8592693725469607423}
   m_Layer: 0
-  m_Name: root
+  m_Name: Root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -121,8 +121,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: def2eba01b2fd214aae2ad839de06f10, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  root: {fileID: 0}
-  startingPos: {x: 0, y: 0}
+  rootPrefab: {fileID: 3931533271776586180}
 --- !u!1 &6239423961378607101
 GameObject:
   m_ObjectHideFlags: 0
