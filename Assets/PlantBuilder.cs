@@ -4,17 +4,23 @@ using UnityEngine;
 
 public class PlantBuilder : MonoBehaviour
 {
+    [SerializeField] private LayerMask RockMask;
+
     public GameObject RootPrefab;
 
     Camera MainCamera;
     Vector3 MouseDragStart;
     Vector3 MousePosition;
     bool MouseDragging;
+    bool RootVerified;
     GameObject CurrentRoot;
 
     void Start()
     {
+        RockMask |= (1 << LayerMask.NameToLayer("Rock"));
+
         MainCamera = Camera.main;
+
         CreateRoot(Vector3.zero);
         PlaceRoot(new Vector3(0,-0.3f,0),new Vector3(0,1,0));
     }
@@ -22,7 +28,7 @@ public class PlantBuilder : MonoBehaviour
     void Update()
     {
         MousePosition = MainCamera.ScreenToWorldPoint(Input.mousePosition);
-        MousePosition.z = 5;
+        MousePosition.z = 20;
         if (Input.GetMouseButtonDown(0))
         {
             MouseDragStart = MousePosition;
@@ -33,10 +39,46 @@ public class PlantBuilder : MonoBehaviour
         else if (Input.GetMouseButtonUp(0))
         {
             MouseDragging = false;
+            if(!RootVerified)
+            {
+                Destroy(CurrentRoot);
+            }
         }
         else if (MouseDragging)
         {
             PlaceRoot(MouseDragStart, MousePosition);
+            VerifyRoot();
+        }
+    }
+
+    void VerifyRoot()
+    {
+        Collider2D[] RockCollision = Physics2D.OverlapBoxAll(
+            new Vector2(CurrentRoot.transform.position.x,CurrentRoot.transform.position.y),
+            new Vector2(CurrentRoot.transform.localScale.x,CurrentRoot.transform.localScale.y),
+            CurrentRoot.transform.rotation.z,
+            RockMask
+        );
+        if(RockCollision.Length == 0)
+        {
+            RootVerified = true;
+        }
+        else
+        {
+            RootVerified = false;
+            for(int i = 0;i < RockCollision.Length;i++)
+            {
+                if(Random.Range(0,2) == 0) RockCollision[i].GetComponent<SpriteRenderer>().color = Color.white;
+                else RockCollision[i].GetComponent<SpriteRenderer>().color = Color.red;
+            }
+        }
+        if(RootVerified)
+        {
+            CurrentRoot.GetComponent<SpriteRenderer>().color = Color.white;
+        }
+        else
+        {
+            CurrentRoot.GetComponent<SpriteRenderer>().color = Color.red;
         }
     }
 
