@@ -15,6 +15,11 @@ public class Resources : MonoBehaviour
     public TMP_Text NutrientText;
     public List<GameObject> NutrientDeposits;
 
+    public float LeftOpponentSunlight;
+    public float RighOpponenttSunlight;
+    public int LeftOpponentNutrients;
+    public int RightOpponentNutrients;
+
     float ExtractionTimerLong = 0;
     float ExtractionTimerLongMax = 2;
     float ExtractionTimerShort = 0;
@@ -85,8 +90,10 @@ public class Resources : MonoBehaviour
                     if (!NutrientScript.Empty && NutrientScript.IsTapped)
                     {
                         Nutrients += NutrientScript.DrainSpeed * NutrientScript.PlayerTaps;
-                        //add opponent nutrient gains here
-                        if(!NutrientScript.Unlimited)
+                        LeftOpponentNutrients += NutrientScript.DrainSpeed * NutrientScript.LeftOpponentTaps;
+                        RightOpponentNutrients += NutrientScript.DrainSpeed * NutrientScript.RightOpponentTaps;
+                        Debug.Log("Left nutrients: " + LeftOpponentNutrients.ToString() + "     Right nutrients: " + RightOpponentNutrients.ToString());
+                        if (!NutrientScript.Unlimited)
                         {
                             NutrientScript.NutrientsLeft -= NutrientScript.DrainSpeed *
                                 (NutrientScript.PlayerTaps + NutrientScript.LeftOpponentTaps + NutrientScript.RightOpponentTaps);
