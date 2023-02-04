@@ -27,43 +27,15 @@ public class Root : MonoBehaviour
         // Redraw all lines       
         if (Input.GetMouseButtonDown(0))
         {
-            mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-            // Check if we need to add new root or sprout a new one from existing line
-            if (Vector2.Distance(mousePos, startingPos) < 0.5f)
-            {
-                // Add new root
-                lines.Add(new Vector2(mousePos.x, mousePos.y));
-                currentPos = mousePos;
-            }
-            else
-            {
-                // Find closest line
-                var closestLine = lines.Select((line, index) => new { line, index })
-                    .OrderBy(x => Vector2.Distance(x.line, mousePos))
-                    .First();
-
-                // Check if we are close enough to the line
-                if (Vector2.Distance(mousePos, closestLine.line) < 0.5f)
-                {
-                    // Add new root
-                    lines.Add(new Vector2(mousePos.x, mousePos.y));
-                    currentPos = mousePos;
-                }
-                else
-                {
-                    // Sprout new root
-                    var newRoot = Instantiate(root, mousePos, Quaternion.identity);
-                    newRoot.GetComponent<Root>().lines = lines.Skip(closestLine.index).ToList();
-                    lines = lines.Take(closestLine.index).ToList();
-                    lines.Add(new Vector2(mousePos.x, mousePos.y));
-                    currentPos = mousePos;
-                }
-            }
+            currentPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
         if (Input.GetMouseButton(0))
         {
             mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            
+
+            
             lineRenderer.positionCount = lines.Count + 2;
             if (lines.Count == 0)
             {
