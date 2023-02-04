@@ -47,3 +47,11 @@ MonoBehaviour:
   Sunlight: 0
   Energy: 0
   Nutrients: 0
+  HealthSlider: {fileID: 0}
+  NutrientText: {fileID: 0}
+  NumberPopup: {fileID: 2184403302218258717, guid: 1049326509fdf8c40826b1e9c1e1c62f, type: 3}
+  NutrientDeposits: []
+  LeftOpponentSunlight: 0
+  RighOpponenttSunlight: 0
+  LeftOpponentNutrients: 0
+  RightOpponentNutrients: 0

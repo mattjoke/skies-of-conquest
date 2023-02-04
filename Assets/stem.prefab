@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3931533271776586177}
   - component: {fileID: 3931533271776586178}
+  - component: {fileID: 8785420574828754124}
   m_Layer: 0
   m_Name: stem
   m_TagString: Untagged
@@ -84,3 +85,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8785420574828754124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3931533271776586180}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02ab97de71983f14dba018c568c9ed88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stemPrefab: {fileID: 3931533271776586180}
+  leafPrefab: {fileID: 1170339450040279846, guid: a034a88d87e36f64c9f1435f6afe017d, type: 3}

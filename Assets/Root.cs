@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,100 +7,97 @@ using UnityEngine;
 
 public class Root : MonoBehaviour
 {
-    public GameObject root;
+    public GameObject rootPrefab;
 
-    private Vector2 startingPos;
+    private int currentLevel = 0;
+
     private Vector2 currentPos;
     private Vector2 mousePos;
 
-    private LineRenderer lineRenderer;
-    private List<Vector2> lines = new();
+    private String direction = "none";
+    private List<RootLevel> stackRoot = new();
+    private GameObject ghost = null;
+    private int count = 0;
     
     void Start()
     {
-        startingPos = root.transform.position;
-        currentPos = startingPos;
-        lineRenderer = gameObject.AddComponent<LineRenderer>();
+        RootLevel firstRoot = new RootLevel(rootPrefab, currentLevel);
+        stackRoot.Add(firstRoot);
+        currentLevel += 1;
     }
 
     void Update()
     {
-        // MouseButtonDown();
-        // MouseButton();
-        // MouseButtonUp();
-        
+        CreateGhost();
+        LeftButtonUp();
     }
-
-    void MouseButtonDown(){
-        // Redraw all lines       
-        if (Input.GetMouseButtonDown(0))
-        {
+    void CreateGhost(){
+        if (Input.GetMouseButton(0)){
             mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            Debug.Log(Vector2.Distance(mousePos, startingPos));
-
-            // Check if we need to add new root or sprout a new one from existing line
-            if (Vector2.Distance(mousePos, startingPos) < 0.5f)
-            {
-                // Add new root
-                lines.Add(new Vector2(mousePos.x, mousePos.y));
-                currentPos = mousePos;
-            }
-            else
-            {
-                // Find closest line
-                var closestLine = lines.Select((line, index) => new { line, index })
-                    .OrderBy(x => Vector2.Distance(x.line, mousePos))
-                    .First();
-
-                // Check if we are close enough to the line
-                if (Vector2.Distance(mousePos, closestLine.line) < 0.5f)
-                {
-                    // Add new root
-                    lines.Add(new Vector2(mousePos.x, mousePos.y));
-                    currentPos = mousePos;
+            Transform middle = stackRoot[currentLevel - 1].GetTransformMiddle();
+            
+            if(mousePos.y < middle.position.y && mousePos.y > middle.lossyScale.y && mousePos.x > middle.position.x && mousePos.x < middle.lossyScale.x){
+                if (ghost == null || direction != "down"){
+                    // Create a "ghost" root
+                    Destroy(ghost);
+                    Vector2 position = middle.position;
+                    position.y -= middle.lossyScale.y;
+                    ghost = GameObject.Instantiate(rootPrefab, position, Quaternion.identity);
+                    Color color = ghost.GetComponent<SpriteRenderer>().material.color;
+                    ghost.GetComponent<SpriteRenderer>().material.color = new Color(color.r, color.g, color.b, 0.3f);
+                    
                 }
-                else
-                {
-                    // Sprout new root
-                    var newRoot = Instantiate(root, mousePos, Quaternion.identity);
-                    newRoot.GetComponent<Root>().lines = lines.Skip(closestLine.index).ToList();
-                    lines = lines.Take(closestLine.index).ToList();
-                    lines.Add(new Vector2(mousePos.x, mousePos.y));
-                    currentPos = mousePos;
-                }
+                direction = "down";
             }
             
-        }
+        } 
     }
 
-    void MouseButton(){
-        if (Input.GetMouseButton(0))
-        {
+    
+    void LeftButtonUp(){
+        if(Input.GetMouseButtonUp(0)){
+            Destroy(ghost);
             mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            lineRenderer.positionCount = lines.Count + 2;
-            if (lines.Count == 0)
-            {
-                lineRenderer.SetPosition(0, new Vector3(startingPos.x, startingPos.y, 0));
-                lineRenderer.SetPosition(1, new Vector3(mousePos.x, mousePos.y, 0));
-                return;
+            Transform middle = stackRoot[currentLevel - 1].GetTransformMiddle();;
+            Vector2 position = middle.position;
+            if(mousePos.y < middle.position.y && mousePos.y > middle.lossyScale.y && mousePos.x > middle.position.x && mousePos.x < middle.lossyScale.x){
+            // count += 1;
+            // Debug.Log(count);
+                switch(direction){
+                    case "down":
+                        position.y -= middle.lossyScale.y;
+                        GameObject newRoot = Instantiate(rootPrefab, position, Quaternion.identity);
+                        stackRoot.Add(new RootLevel(newRoot, currentLevel));
+                        currentLevel += 1;
+                        break;
+                    default:
+                        Debug.Log("no change");
+                        break;
+                }
+                direction = "none";
             }
-            lineRenderer.SetPosition(0, new Vector3(startingPos.x, startingPos.y, 0));
-            lineRenderer.SetPosition(1, new Vector3(lines[0].x, lines[0].y, 0));
-            for (int i = 1; i < lines.Count; i++)
-            {
-                lineRenderer.SetPosition(i + 1, new Vector3(lines[i].x, lines[i].y, 0));
-            }
-            lineRenderer.SetPosition(lines.Count + 1, new Vector3(mousePos.x, mousePos.y, 0));
-        }
+        }    
     }
 
-    void MouseButtonUp(){
-        if (Input.GetMouseButtonUp(0))
-        {
-            Debug.Log("RELEASE");
-            mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            lines.Add(new Vector2(mousePos.x, mousePos.y));
-            currentPos = mousePos;
-        }
+}
+
+// Or root
+class RootLevel 
+{
+    private int level = 0;
+    private GameObject middle = null;
+
+    public RootLevel(GameObject middle, int level){
+        this.middle = middle;
+        this.level = level;
+    }
+
+    public Transform GetTransformMiddle(){
+        return this.middle.transform;
+    }
+
+    public GameObject GetMiddle(){
+        return this.middle;
     }
 }
+

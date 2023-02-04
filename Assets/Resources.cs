@@ -13,6 +13,7 @@ public class Resources : MonoBehaviour
     public int Nutrients;
     public Slider HealthSlider;
     public TMP_Text NutrientText;
+    public GameObject NumberPopup;
     public List<GameObject> NutrientDeposits;
 
     public float LeftOpponentSunlight;
@@ -89,6 +90,13 @@ public class Resources : MonoBehaviour
                     Nutrient NutrientScript = NutrientDeposits[CurrentExtractionTarget].GetComponent<Nutrient>();
                     if (!NutrientScript.Empty && NutrientScript.IsTapped)
                     {
+                        if(NutrientScript.PlayerTaps != 0)
+                        {
+                            DisplayResourceGain(
+                                NutrientScript.DrainSpeed * NutrientScript.PlayerTaps,
+                                NutrientScript.transform.position
+                            );
+                        }
                         Nutrients += NutrientScript.DrainSpeed * NutrientScript.PlayerTaps;
                         LeftOpponentNutrients += NutrientScript.DrainSpeed * NutrientScript.LeftOpponentTaps;
                         RightOpponentNutrients += NutrientScript.DrainSpeed * NutrientScript.RightOpponentTaps;
@@ -107,5 +115,11 @@ public class Resources : MonoBehaviour
                 }
             }
         }
+    }
+
+    void DisplayResourceGain(int amount,Vector3 position)
+    {
+        GameObject PopupInstance = Instantiate(NumberPopup,position,Quaternion.identity);
+        PopupInstance.transform.GetChild(0).transform.GetChild(0).GetComponent<TMP_Text>().text = "+" + amount.ToString();
     }
 }
