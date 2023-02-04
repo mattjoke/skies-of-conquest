@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Resources : MonoBehaviour
+public class Resources : MonoBehaviour  
 {
     public float Sunlight;
     public float Energy;

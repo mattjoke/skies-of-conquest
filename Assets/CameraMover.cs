@@ -10,11 +10,11 @@ public class CameraMover : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKey("w"))
+        if (Input.GetKey("w") || Input.GetKey("up"))
         {
             MoveCamera(1f);
         }
-        else if (Input.GetKey("s"))
+        else if (Input.GetKey("s") || Input.GetKey("down"))
         {
             MoveCamera(-1f);
         }
