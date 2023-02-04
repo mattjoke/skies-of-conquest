@@ -14,6 +14,7 @@ public class Resources : MonoBehaviour
     public Slider HealthSlider;
     public TMP_Text NutrientText;
     public GameObject NumberPopup;
+    public Camera MapCamera;
     public List<GameObject> NutrientDeposits;
 
     public float LeftOpponentSunlight;

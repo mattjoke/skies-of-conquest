@@ -29,7 +29,7 @@ public class NutrientSpawner : MonoBehaviour
     void SpawnRandom()
     {
         SpawnerDepth += Random.Range(0.1f, 1.1f);
-        int ItemType = Random.Range(1, 4);
+        int ItemType = Random.Range(1, 5);
         GameObject ItemTypeObject = BlueNutrientPrefab;
         if (ItemType == 1)
         {
