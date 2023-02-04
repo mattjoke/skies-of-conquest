@@ -46,8 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8165c6f5430731144a09ae60a690839c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NutrientsLeft: 0
-  DrainSpeed: 0
+  NutrientsLeft: 200
+  DrainSpeed: 20
   Unlimited: 0
 --- !u!212 &2830052054327696687
 SpriteRenderer:

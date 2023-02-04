@@ -7,17 +7,22 @@ public class Nutrient : MonoBehaviour
     public int NutrientsLeft;
     public int DrainSpeed;
     public bool Unlimited;
-    // Start is called before the first frame update
+    public bool Empty = false;
+    public bool IsTapped = false;
+    public int PlayerTaps = 0;
+    public int LeftOpponentTaps = 0;
+    public int RightOpponentTaps = 0;
+
     void Start()
     {
-        NutrientsLeft = 100;
-        DrainSpeed = 5; 
-        Unlimited = false;
+        
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if(!Empty && IsTapped)
+        {
+
+        }
     }
 }

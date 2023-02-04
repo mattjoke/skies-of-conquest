@@ -8,7 +8,8 @@ public class NutrientSpawner : MonoBehaviour
     public GameObject RedNutrientPrefab;
     public GameObject YellowNutrientPrefab;
     public GameObject RockPrefab;
-    // Start is called before the first frame update
+    public Resources ResourceTracker;
+
     void Start()
     {
         for(int i = 0;i < 10;i++)
@@ -17,11 +18,6 @@ public class NutrientSpawner : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     void SpawnRandom()
     {
         int ItemType = Random.Range(1, 4);
@@ -42,10 +38,14 @@ public class NutrientSpawner : MonoBehaviour
         {
             ItemTypeObject = RockPrefab;
         }
-        Instantiate(
+        GameObject NewDeposit = Instantiate(
             ItemTypeObject,
             new Vector3(Random.Range(-10f, 10f), -Random.Range(1f, 10f), 0),
             Quaternion.identity
         );
+        if(ItemType != 4)
+        {
+            ResourceTracker.NutrientDeposits.Add(NewDeposit);
+        }
     }
 }

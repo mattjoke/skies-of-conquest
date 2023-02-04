@@ -7,13 +7,7 @@ public class CameraMover : MonoBehaviour
     public Camera MainCamera;
     public Camera MapCamera;
     public float CameraSpeed;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKey("w"))
