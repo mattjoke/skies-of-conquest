@@ -5,6 +5,8 @@ using UnityEngine;
 public class PlantBuilder : MonoBehaviour
 {
     [SerializeField] private LayerMask RockMask;
+    ContactFilter2D RockFilter;
+    Collider2D[] RockCollision;
 
     public GameObject RootPrefab;
 
@@ -18,6 +20,9 @@ public class PlantBuilder : MonoBehaviour
     void Start()
     {
         RockMask |= (1 << LayerMask.NameToLayer("Rock"));
+        RockFilter = new ContactFilter2D();
+        RockFilter.SetLayerMask(RockMask);
+        RockCollision = new Collider2D[10];
 
         MainCamera = Camera.main;
 
@@ -33,7 +38,6 @@ public class PlantBuilder : MonoBehaviour
         {
             MouseDragStart = MousePosition;
             CreateRoot(MouseDragStart);
-            //CurrentRoot.GetComponent<SpriteRenderer>().color = Color.red;
             MouseDragging = true;
         }
         else if (Input.GetMouseButtonUp(0))
@@ -53,20 +57,18 @@ public class PlantBuilder : MonoBehaviour
 
     void VerifyRoot()
     {
-        Collider2D[] RockCollision = Physics2D.OverlapBoxAll(
-            new Vector2(CurrentRoot.transform.position.x,CurrentRoot.transform.position.y),
-            new Vector2(CurrentRoot.transform.localScale.x,CurrentRoot.transform.localScale.y),
-            CurrentRoot.transform.rotation.z,
-            RockMask
+        int nContacts = CurrentRoot.GetComponent<BoxCollider2D>().OverlapCollider(
+            RockFilter,
+            RockCollision
         );
-        if(RockCollision.Length == 0)
+        if(nContacts == 0)
         {
             RootVerified = true;
         }
         else
         {
             RootVerified = false;
-            for(int i = 0;i < RockCollision.Length;i++)
+            for(int i = 0;i < nContacts;i++)
             {
                 if(Random.Range(0,2) == 0) RockCollision[i].GetComponent<SpriteRenderer>().color = Color.white;
                 else RockCollision[i].GetComponent<SpriteRenderer>().color = Color.red;
