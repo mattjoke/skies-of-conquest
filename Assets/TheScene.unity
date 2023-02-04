@@ -1475,6 +1475,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9048460892510975463, guid: f9fa3f06f3f9dba479a53331d4613e1b, type: 3}
+      propertyPath: NumberPopup
+      value: 
+      objectReference: {fileID: 2184403302218258717, guid: 1049326509fdf8c40826b1e9c1e1c62f, type: 3}
+    - target: {fileID: 9048460892510975463, guid: f9fa3f06f3f9dba479a53331d4613e1b, type: 3}
       propertyPath: HealthSlider
       value: 
       objectReference: {fileID: 1945688122}
