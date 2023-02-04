@@ -9,10 +9,18 @@ public class NutrientSpawner : MonoBehaviour
     public GameObject YellowNutrientPrefab;
     public GameObject RockPrefab;
     public Resources ResourceTracker;
+    public Camera MapCamera;
+
+    float SpawnerDepth = 1;
 
     void Start()
     {
-        for(int i = 0;i < 10;i++)
+        
+    }
+
+    void Update()
+    {
+        while(SpawnerDepth < -MapCamera.transform.position.y + 50f)
         {
             SpawnRandom();
         }
@@ -20,6 +28,7 @@ public class NutrientSpawner : MonoBehaviour
 
     void SpawnRandom()
     {
+        SpawnerDepth += Random.Range(0.1f, 1.1f);
         int ItemType = Random.Range(1, 4);
         GameObject ItemTypeObject = BlueNutrientPrefab;
         if (ItemType == 1)
@@ -40,7 +49,7 @@ public class NutrientSpawner : MonoBehaviour
         }
         GameObject NewDeposit = Instantiate(
             ItemTypeObject,
-            new Vector3(Random.Range(-10f, 10f), -Random.Range(1f, 10f), 0),
+            new Vector3(Random.Range(-10f, 10f), -SpawnerDepth, 0),
             Quaternion.identity
         );
         if(ItemType != 4)

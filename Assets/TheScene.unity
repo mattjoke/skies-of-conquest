@@ -538,6 +538,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -2019373718654329066, guid: 54e2dc86490e58040a27b18863290cf5, type: 3}
+      propertyPath: MapCamera
+      value: 
+      objectReference: {fileID: 2133842641}
+    - target: {fileID: -2019373718654329066, guid: 54e2dc86490e58040a27b18863290cf5, type: 3}
       propertyPath: ResourceTracker
       value: 
       objectReference: {fileID: 1168521286}
