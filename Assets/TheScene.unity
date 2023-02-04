@@ -154,6 +154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MainCamera: {fileID: 2020910563}
   MapCamera: {fileID: 2133842641}
+  CameraSpeed: 10
 --- !u!4 &197392289
 Transform:
   m_ObjectHideFlags: 0

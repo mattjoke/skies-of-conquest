@@ -6,6 +6,7 @@ public class CameraMover : MonoBehaviour
 {
     public Camera MainCamera;
     public Camera MapCamera;
+    public float CameraSpeed;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +28,7 @@ public class CameraMover : MonoBehaviour
 
     void MoveCamera(float direction)
     {
-        MainCamera.transform.position += new Vector3(0, direction, 0);
-        MapCamera.transform.position += new Vector3(0, direction, 0);
+        MainCamera.transform.position += new Vector3(0, direction * CameraSpeed * Time.deltaTime, 0);
+        MapCamera.transform.position += new Vector3(0, direction * CameraSpeed * Time.deltaTime, 0);
     }
 }
