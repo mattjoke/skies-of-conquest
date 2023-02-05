@@ -37,7 +37,7 @@ public class PlantBuilder : MonoBehaviour
         MainCamera = Camera.main;
 
         CreateRoot(Vector3.zero);
-        PlaceRoot(new Vector3(0, -0.3f, 0), new Vector3(0, 1, 0));
+        PlaceRoot(new Vector3(0, -0.3f, 0), new Vector3(0, 1.3f, 0));
     }
 
     void Update()
@@ -85,6 +85,7 @@ public class PlantBuilder : MonoBehaviour
     void VerifyRoot()
     {
         RootVerified = true;
+        if (CurrentRoot.transform.localScale.y < 2) RootVerified = false;
         //int nContacts = Physics2D.OverlapPointNonAlloc(new Vector2(MousePosition.x, MousePosition.y),RockCollision,PlantMask);
         int nContacts = CurrentRoot.GetComponent<BoxCollider2D>().OverlapCollider(
             PlantFilter,
@@ -101,11 +102,11 @@ public class PlantBuilder : MonoBehaviour
         if (nContacts != 0)
         {
             RootVerified = false;
-            for (int i = 0; i < nContacts; i++)
+            /*for (int i = 0; i < nContacts; i++)
             {
                 if (Random.Range(0, 2) == 0) RockCollision[i].GetComponent<SpriteRenderer>().color = Color.white;
                 else RockCollision[i].GetComponent<SpriteRenderer>().color = Color.red;
-            }
+            }*/
         }
         ShowVerified();
     }
