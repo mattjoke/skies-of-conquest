@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 9020792754720468918}
   - component: {fileID: 9020792754720468919}
   - component: {fileID: 9050333625465479565}
-  m_Layer: 7
+  m_Layer: 6
   m_Name: EvilRootLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -166,6 +166,8 @@ MonoBehaviour:
   LeafPrefab: {fileID: 1936449943048973111, guid: bf4221157491e1f40a3bfbd40c095a5d, type: 3}
   ShadePrefab: {fileID: 1856185718328818782, guid: 307152d195b1d5b43812edbf3fb4a503, type: 3}
   PlantBuilder: {fileID: 0}
+  LeafSource: {fileID: 0}
+  LeafClip: {fileID: 0}
 --- !u!61 &9050333625465479565
 BoxCollider2D:
   m_ObjectHideFlags: 0
