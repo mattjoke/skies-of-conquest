@@ -79,6 +79,7 @@ public class Resources : MonoBehaviour
             {
                 Extracting = false;
                 CurrentExtractionTarget = 0;
+                
             }
             else
             {
