@@ -165,15 +165,13 @@ public class PlantBuilder : MonoBehaviour
                     {
                         endpoint.transform.position = MouseDragStart;
                     }
-                    CurrentRoot = Instantiate(RootItemThickPrefab, MousePosition, Quaternion.identity);
+                    endpoint.transform.rotation = CurrentRoot.transform.rotation;
+                    //CurrentRoot = Instantiate(RootItemThickPrefab, MousePosition, Quaternion.identity);
                 }
                 else
                 {
-
                     CurrentRoot.transform.localScale = new Vector3(CurrentRoot.transform.localScale.x * 0.5f, CurrentRoot.transform.localScale.y, CurrentRoot.transform.localScale.z);
                 }
-
-
             }
             else
             {
@@ -456,7 +454,7 @@ public class PlantBuilder : MonoBehaviour
                 CompareLeaves(AllLeaves[i], AllLeaves[j]);
             }
             if (AllLeaves[i].GetComponent<Leaf>().PlayerOwned) SunlightPercentage += GetSunPercentage(AllLeaves[i]) / 4f;
-            
+
         }
         ResourceTracker.Sunlight = SunlightPercentage;
     }
