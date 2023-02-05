@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Resources : MonoBehaviour
@@ -30,6 +31,7 @@ public class Resources : MonoBehaviour
     void Start()
     {
         Reset();
+        Energy = 1f;
     }
 
     public void Reset()
@@ -44,6 +46,11 @@ public class Resources : MonoBehaviour
         TickEnergySunlight();
         TickNutrientExtraction();
         UpdateHUD();
+
+        if (Energy <= 0)
+        {
+            SceneManager.LoadScene("Game Over");
+        }
     }
 
     void UpdateHUD()
