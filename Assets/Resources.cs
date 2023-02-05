@@ -68,9 +68,8 @@ public class Resources : MonoBehaviour
         }
         if (Energy < Sunlight - .05f)
         {
-            Energy = Sunlight - .05f;
+            Energy = Mathf.Max(0, (Sunlight - .05f) * 1.053f);
         }
-        Energy = Mathf.Max(0, Energy * 1.053f);
     }
 
     void TickNutrientExtraction()
