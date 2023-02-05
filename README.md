@@ -1,10 +1,10 @@
 # Skies of Conquest 
 #### (a GGJ Game 2023)
 
-"Grow roots to get nutrients, 
-grow roots to reach the sun, 
-grow roots to conquer the skies." 
-- Any flower ever
+> "Grow roots to get nutrients, <br>
+> grow roots to reach the sun,  <br>
+> grow roots to conquer the skies." <br>
+> - Any flower ever
 
 This quick game is about being the only plant to receive the sun. Grow deeper to find delicious nutrients! Grow higher to get enough of the sun. Don't forget! Your enemies try to block you from the sun. 
 
