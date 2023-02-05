@@ -5,7 +5,9 @@ using UnityEngine;
 public class PlantBuilder : MonoBehaviour
 {
     [SerializeField] private LayerMask RockMask;
+    [SerializeField] private LayerMask PlantMask;
     ContactFilter2D RockFilter;
+    ContactFilter2D PlantFilter;
     Collider2D[] RockCollision;
 
     public GameObject RootPrefab;
@@ -20,8 +22,11 @@ public class PlantBuilder : MonoBehaviour
     void Start()
     {
         RockMask |= (1 << LayerMask.NameToLayer("Rock"));
+        PlantMask |= (1 << LayerMask.NameToLayer("Plant"));
         RockFilter = new ContactFilter2D();
         RockFilter.SetLayerMask(RockMask);
+        PlantFilter = new ContactFilter2D();
+        PlantFilter.SetLayerMask(PlantMask);
         RockCollision = new Collider2D[10];
 
         MainCamera = Camera.main;
@@ -57,15 +62,21 @@ public class PlantBuilder : MonoBehaviour
 
     void VerifyRoot()
     {
+        RootVerified = true;
+        //int nContacts = Physics2D.OverlapPointNonAlloc(new Vector2(MousePosition.x, MousePosition.y),RockCollision,PlantMask);
         int nContacts = CurrentRoot.GetComponent<BoxCollider2D>().OverlapCollider(
+            PlantFilter,
+            RockCollision
+        );
+        if (nContacts == 0)
+        {
+            RootVerified = false;
+        }
+        nContacts = CurrentRoot.GetComponent<BoxCollider2D>().OverlapCollider(
             RockFilter,
             RockCollision
         );
-        if(nContacts == 0)
-        {
-            RootVerified = true;
-        }
-        else
+        if(nContacts != 0)
         {
             RootVerified = false;
             for(int i = 0;i < nContacts;i++)
