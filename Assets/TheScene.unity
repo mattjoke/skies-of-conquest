@@ -259,6 +259,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7183137613580870190, guid: 83397a0c165285e4085ec34ae7db45a6, type: 3}
+      propertyPath: LeafPrefab
+      value: 
+      objectReference: {fileID: 1170339450040279846, guid: a034a88d87e36f64c9f1435f6afe017d, type: 3}
     - target: {fileID: 7183137613580870191, guid: 83397a0c165285e4085ec34ae7db45a6, type: 3}
       propertyPath: m_Name
       value: PlantBuilder

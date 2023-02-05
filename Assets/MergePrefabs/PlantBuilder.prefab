@@ -44,4 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae2d2b0fba520f8469be69a0d498b81d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  RockMask:
+    serializedVersion: 2
+    m_Bits: 0
+  PlantMask:
+    serializedVersion: 2
+    m_Bits: 0
   RootPrefab: {fileID: 4163292064981428345, guid: 05d11e75ca24eda4182955b6018d4537, type: 3}
+  LeaftPrefab: {fileID: 1170339450040279846, guid: a034a88d87e36f64c9f1435f6afe017d, type: 3}
