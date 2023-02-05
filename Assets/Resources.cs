@@ -38,7 +38,7 @@ public class Resources : MonoBehaviour
     {
         Sunlight = 1;
         Energy = 1;
-        Nutrients = 100;
+        Nutrients = 10;
     }
 
     void Update()
