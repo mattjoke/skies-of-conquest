@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -52,26 +53,20 @@ public class PlantBuilder : MonoBehaviour
         PlantFilter.SetLayerMask(PlantMask);
         LeafFilter = new ContactFilter2D();
         LeafFilter.SetLayerMask(LeafMask);
-
-        RockCollision = new Collider2D[10];
-        MainCamera = Camera.main;
-
-        CreateRoot(Vector3.zero);
-        PlaceRoot(new Vector3(0, -0.3f, 0), new Vector3(0, 1, 0));
-        CreateLeaf(Vector3.zero);
-        PlaceLeaf(new Vector3(0, 1f, 0));
-
         NutrientFilter = new ContactFilter2D();
         NutrientFilter.SetLayerMask(NutrientMask);
+
         RockCollision = new Collider2D[10];
+
+        MainCamera = Camera.main;
 
         CostDisplay = Instantiate(NumberDisplay, Vector3.zero, Quaternion.identity);
         HideBuildCost();
 
-        MainCamera = Camera.main;
-
         CreateRoot(Vector3.zero);
         PlaceRoot(new Vector3(0, -0.3f, 0), new Vector3(0, 1.3f, 0));
+        CreateLeaf(Vector3.zero);
+        PlaceLeaf(new Vector3(0, 1f, 0));
     }
 
     void Update()
@@ -131,10 +126,25 @@ public class PlantBuilder : MonoBehaviour
                 Destroy(CurrentLeaf);
                 return;
             }
+            ResourceTracker.Nutrients -= (int)Mathf.Round(CurrentLeaf.transform.localScale.y * 50);
+            int nContacts = CurrentLeaf.GetComponent<BoxCollider2D>().OverlapCollider(
+                 NutrientFilter,
+                 RockCollision
+             );
+            if (nContacts != 0)
+            {
+                for (int i = 0; i < nContacts; i++)
+                {
+                    RockCollision[i].GetComponent<Nutrient>().PlayerTaps++;
+                    RockCollision[i].GetComponent<Nutrient>().IsTapped = true;
+                }
+            }
+            HideBuildCost();
         }
         else if (MouseDraggingLeaf)
         {
             PlaceLeaf(MousePosition);
+            DisplayBuildCost((int)Mathf.Round(CurrentLeaf.transform.localScale.y * 50), MousePosition);
             VerifyLeaf();
         }
     }
@@ -153,7 +163,15 @@ public class PlantBuilder : MonoBehaviour
         if (nContacts != 1)
         {
             RootVerified = false;
-            if(ReportReason) Debug.Log("Too many or few plants");
+            if (ReportReason)
+            {
+                Debug.Log(nContacts);
+                Debug.Log("Too many or few plants");
+                for (int i = 0; i < nContacts; i++)
+                {
+                    Debug.Log(RockCollision[i].GetComponent<SpriteRenderer>().gameObject.name);
+                }
+            }
         }
         nContacts = CurrentRoot.GetComponent<BoxCollider2D>().OverlapCollider(
              RockFilter,
@@ -177,11 +195,14 @@ public class PlantBuilder : MonoBehaviour
         if (nContacts != 0)
         {
             RootVerified = false;
-            if (ReportReason) Debug.Log("Leaf");
-            for (int i = 0; i < nContacts; i++)
+            if (ReportReason)
             {
-                if (Random.Range(0, 2) == 0) RockCollision[i].GetComponent<SpriteRenderer>().color = Color.white;
-                else RockCollision[i].GetComponent<SpriteRenderer>().color = Color.red;
+                Debug.Log("Leaf");
+                for (int i = 0; i < nContacts; i++)
+                {
+                    if (Random.Range(0, 2) == 0) RockCollision[i].GetComponent<SpriteRenderer>().color = Color.white;
+                    else RockCollision[i].GetComponent<SpriteRenderer>().color = Color.red;
+                }
             }
         }
         ShowVerified();
@@ -196,18 +217,14 @@ public class PlantBuilder : MonoBehaviour
         if (nContacts != 0)
         {
             LeafVerified = false;
-            for (int i = 0; i < nContacts; i++)
-            {
-                if (Random.Range(0, 2) == 0) RockCollision[i].GetComponent<SpriteRenderer>().color = Color.white;
-                else RockCollision[i].GetComponent<SpriteRenderer>().color = Color.red;
-            }
         }
         nContacts = CurrentLeaf.GetComponent<BoxCollider2D>().OverlapCollider(
            PlantFilter,
            RockCollision
        );
-        if (nContacts != 0)
+        if (nContacts != 1)
         {
+            LeafVerified = false;
             for (int i = 0; i < nContacts; i++)
             {
                 if (Random.Range(0, 2) == 0) RockCollision[i].GetComponent<SpriteRenderer>().color = Color.white;
@@ -221,11 +238,6 @@ public class PlantBuilder : MonoBehaviour
         if (nContacts != 0)
         {
             LeafVerified = false;
-            for (int i = 0; i < nContacts; i++)
-            {
-                if (Random.Range(0, 2) == 0) RockCollision[i].GetComponent<SpriteRenderer>().color = Color.white;
-                else RockCollision[i].GetComponent<SpriteRenderer>().color = Color.red;
-            }
         }
         ShowVerified();
     }
@@ -256,6 +268,7 @@ public class PlantBuilder : MonoBehaviour
 
     void ShowVerified()
     {
+        if (CurrentRoot == null) return;
         if (RootVerified )
         {
             CurrentRoot.GetComponent<SpriteRenderer>().color = Color.white;
@@ -264,6 +277,7 @@ public class PlantBuilder : MonoBehaviour
         {
             CurrentRoot.GetComponent<SpriteRenderer>().color = Color.red;
         }
+        if (CurrentLeaf == null) return;
         if (LeafVerified)
         {
             CurrentLeaf.GetComponent<SpriteRenderer>().color = Color.white;
@@ -271,7 +285,6 @@ public class PlantBuilder : MonoBehaviour
         else
         {
             CurrentLeaf.GetComponent<SpriteRenderer>().color = Color.red;
-
         }
     }
 
