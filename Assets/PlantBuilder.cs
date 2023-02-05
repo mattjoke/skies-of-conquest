@@ -211,6 +211,8 @@ public class PlantBuilder : MonoBehaviour
     void VerifyLeaf()
     {
         LeafVerified = true;
+        if (ResourceTracker.Nutrients < CurrentLeaf.transform.localScale.y * 50) LeafVerified = false;
+        if (CurrentLeaf.transform.position.y < 0) LeafVerified = false;
         var nContacts = CurrentLeaf.GetComponent<BoxCollider2D>().OverlapCollider(
            RockFilter,
            RockCollision);
@@ -221,20 +223,15 @@ public class PlantBuilder : MonoBehaviour
         nContacts = CurrentLeaf.GetComponent<BoxCollider2D>().OverlapCollider(
            PlantFilter,
            RockCollision
-       );
+        );
         if (nContacts != 1)
         {
             LeafVerified = false;
-            for (int i = 0; i < nContacts; i++)
-            {
-                if (Random.Range(0, 2) == 0) RockCollision[i].GetComponent<SpriteRenderer>().color = Color.white;
-                else RockCollision[i].GetComponent<SpriteRenderer>().color = Color.red;
-            }
         }
         nContacts = CurrentLeaf.GetComponent<BoxCollider2D>().OverlapCollider(
           LeafFilter,
           RockCollision
-      );
+        );
         if (nContacts != 0)
         {
             LeafVerified = false;
