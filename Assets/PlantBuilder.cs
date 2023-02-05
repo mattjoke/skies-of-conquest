@@ -82,7 +82,6 @@ public class PlantBuilder : MonoBehaviour
             else
             {
                 Destroy(CurrentRoot);
-                return;
             }
             HideBuildCost();
         }
