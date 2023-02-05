@@ -87,7 +87,7 @@ public class PlantBuilder : MonoBehaviour
         else if (Input.GetMouseButtonUp(0))
         {
             MouseDragging = false;
-            VerifyRoot();
+            VerifyRoot(true);
             if (RootVerified)
             {
                 ResourceTracker.Nutrients -= (int)Mathf.Round(CurrentRoot.transform.localScale.y);
@@ -115,7 +115,7 @@ public class PlantBuilder : MonoBehaviour
         {
             PlaceRoot(MouseDragStart, MousePosition);
             DisplayBuildCost((int)Mathf.Round(CurrentRoot.transform.localScale.y),MousePosition);
-            VerifyRoot();
+            VerifyRoot(false);
         }
         else if (Input.GetMouseButtonDown(1))
         {
@@ -139,9 +139,10 @@ public class PlantBuilder : MonoBehaviour
         }
     }
 
-    void VerifyRoot()
+    void VerifyRoot(bool ReportReason)
     {
         RootVerified = true;
+        if (ReportReason) Debug.Log("Verifying");
         if (CurrentRoot.transform.localScale.y < 2) RootVerified = false;
         if (Mathf.Round(CurrentRoot.transform.localScale.y) > ResourceTracker.Nutrients) RootVerified = false;
         //int nContacts = Physics2D.OverlapPointNonAlloc(new Vector2(MousePosition.x, MousePosition.y),RockCollision,PlantMask);
@@ -152,6 +153,7 @@ public class PlantBuilder : MonoBehaviour
         if (nContacts != 1)
         {
             RootVerified = false;
+            if(ReportReason) Debug.Log("Too many or few plants");
         }
         nContacts = CurrentRoot.GetComponent<BoxCollider2D>().OverlapCollider(
              RockFilter,
@@ -160,6 +162,7 @@ public class PlantBuilder : MonoBehaviour
         if (nContacts != 0)
         {
             RootVerified = false;
+            if (ReportReason) Debug.Log("Rock");
             /*for (int i = 0; i < nContacts; i++)
             {
                 if (Random.Range(0, 2) == 0) RockCollision[i].GetComponent<SpriteRenderer>().color = Color.white;
@@ -174,6 +177,7 @@ public class PlantBuilder : MonoBehaviour
         if (nContacts != 0)
         {
             RootVerified = false;
+            if (ReportReason) Debug.Log("Leaf");
             for (int i = 0; i < nContacts; i++)
             {
                 if (Random.Range(0, 2) == 0) RockCollision[i].GetComponent<SpriteRenderer>().color = Color.white;
