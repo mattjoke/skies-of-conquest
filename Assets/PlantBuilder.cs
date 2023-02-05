@@ -11,12 +11,13 @@ public class PlantBuilder : MonoBehaviour
     Collider2D[] RockCollision;
 
     public GameObject RootPrefab;
+    public GameObject BranchPrefab;
 
     Camera MainCamera;
     Vector3 MouseDragStart;
     Vector3 MousePosition;
     bool MouseDragging;
-    bool RootVerified;
+    bool RootVerified = true;
     GameObject CurrentRoot;
 
     void Start()
@@ -32,13 +33,14 @@ public class PlantBuilder : MonoBehaviour
         MainCamera = Camera.main;
 
         CreateRoot(Vector3.zero);
-        PlaceRoot(new Vector3(0,-0.3f,0),new Vector3(0,1,0));
+        PlaceRoot(new Vector3(0, -0.3f, 0), new Vector3(0, 1, 0));
     }
 
     void Update()
     {
         MousePosition = MainCamera.ScreenToWorldPoint(Input.mousePosition);
         MousePosition.z = 20;
+        RootVerified = true;
         if (Input.GetMouseButtonDown(0))
         {
             MouseDragStart = MousePosition;
@@ -47,17 +49,44 @@ public class PlantBuilder : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0))
         {
+            VerifyRoot();
             MouseDragging = false;
-            if(!RootVerified)
+            if (!RootVerified)
             {
                 Destroy(CurrentRoot);
+                return;
             }
+            CurrentRoot.GetComponent<SpriteRenderer>().color = Color.white;
         }
         else if (MouseDragging)
         {
             PlaceRoot(MouseDragStart, MousePosition);
             VerifyRoot();
         }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            MouseDragStart = MousePosition;
+            CreateRoot(MouseDragStart);
+            MouseDragging = true;
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            VerifyRoot();
+            MouseDragging = false;
+            if (!RootVerified)
+            {
+                Destroy(CurrentRoot);
+                return;
+            }
+            CurrentRoot.GetComponent<SpriteRenderer>().color = Color.white;
+        }
+        else if (MouseDragging)
+        {
+            PlaceRoot(MouseDragStart, MousePosition);
+            VerifyRoot();
+        }
+
     }
 
     void VerifyRoot()
@@ -68,31 +97,33 @@ public class PlantBuilder : MonoBehaviour
             PlantFilter,
             RockCollision
         );
-        if (nContacts == 0)
+        if (nContacts > 0)
         {
             RootVerified = false;
         }
         nContacts = CurrentRoot.GetComponent<BoxCollider2D>().OverlapCollider(
-            RockFilter,
-            RockCollision
-        );
-        if(nContacts != 0)
+           RockFilter,
+           RockCollision
+       );
+        if (nContacts != 0)
         {
             RootVerified = false;
-            for(int i = 0;i < nContacts;i++)
+            for (int i = 0; i < nContacts; i++)
             {
-                if(Random.Range(0,2) == 0) RockCollision[i].GetComponent<SpriteRenderer>().color = Color.white;
+                if (Random.Range(0, 2) == 0) RockCollision[i].GetComponent<SpriteRenderer>().color = Color.white;
                 else RockCollision[i].GetComponent<SpriteRenderer>().color = Color.red;
             }
         }
-        if(RootVerified)
+
+        /*
+
+        for (int i = 0; i < nContacts; i++)
         {
-            CurrentRoot.GetComponent<SpriteRenderer>().color = Color.white;
+            if (Random.Range(0, 2) == 0) RockCollision[i].GetComponent<SpriteRenderer>().color = Color.white;
+            else 
+            RockCollision[i].GetComponent<SpriteRenderer>().color = Color.red;
         }
-        else
-        {
-            CurrentRoot.GetComponent<SpriteRenderer>().color = Color.red;
-        }
+         */
     }
 
     void CreateRoot(Vector3 Position)
@@ -100,10 +131,10 @@ public class PlantBuilder : MonoBehaviour
         CurrentRoot = Instantiate(RootPrefab, Position, Quaternion.identity);
     }
 
-    void PlaceRoot(Vector3 StartPosition,Vector3 EndPosition)
+    void PlaceRoot(Vector3 StartPosition, Vector3 EndPosition)
     {
         CurrentRoot.transform.position = (EndPosition + StartPosition) / 2f;
-        CurrentRoot.transform.rotation = Quaternion.Euler(0, 0, 
+        CurrentRoot.transform.rotation = Quaternion.Euler(0, 0,
             90f + Mathf.Rad2Deg * Mathf.Atan2(EndPosition.y - StartPosition.y, EndPosition.x - StartPosition.x)
         );
         CurrentRoot.transform.localScale = new Vector3(1, (EndPosition - StartPosition).magnitude * 0.8f + 0.25f, 1);
