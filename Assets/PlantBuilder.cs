@@ -163,12 +163,16 @@ public class PlantBuilder : MonoBehaviour
                 );
                 if (nContacts == 1)
                 {
-                    if (Vector3.Magnitude(endpoint.transform.position - MouseDragStart) < 0.5)
+                    Debug.Log(Vector3.Magnitude(endpoint.transform.position - MouseDragStart));
+                    if (Vector3.Magnitude(endpoint.transform.position - MouseDragStart) < 2)
                     {
                         endpoint.transform.position = MousePosition;
                     }
                     else
                     {
+                        Debug.Log(endpoint.transform.position);
+                        Debug.Log(MouseDragStart);
+                        Debug.Log(MousePosition);
                         endpoint.transform.position = MouseDragStart;
                     }
                     endpoint.transform.rotation = CurrentRoot.transform.rotation;
@@ -234,6 +238,7 @@ public class PlantBuilder : MonoBehaviour
     {
         RootVerified = true;
         if (ReportReason) Debug.Log("Verifying");
+        if (CurrentRoot == null) RootVerified = false;
         if (CurrentRoot.transform.localScale.y < 2) RootVerified = false;
         if (CurrentLeaf.transform.position.y < 0) LeafVerified = false;
         if (Mathf.Round(CurrentRoot.transform.localScale.y) > ResourceTracker.Nutrients) RootVerified = false;

@@ -73,6 +73,7 @@ GameObject:
   - component: {fileID: 9020792754720468913}
   - component: {fileID: 9020792754720468918}
   - component: {fileID: 9020792754720468919}
+  - component: {fileID: 9050333625465479565}
   m_Layer: 7
   m_Name: EvilRootLeft
   m_TagString: Untagged
@@ -165,3 +166,29 @@ MonoBehaviour:
   LeafPrefab: {fileID: 1936449943048973111, guid: bf4221157491e1f40a3bfbd40c095a5d, type: 3}
   ShadePrefab: {fileID: 1856185718328818782, guid: 307152d195b1d5b43812edbf3fb4a503, type: 3}
   PlantBuilder: {fileID: 0}
+--- !u!61 &9050333625465479565
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9020792754720468916}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.625, y: 1.25}
+    newSize: {x: 0.625, y: 1.25}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.625, y: 1.25}
+  m_EdgeRadius: 0
