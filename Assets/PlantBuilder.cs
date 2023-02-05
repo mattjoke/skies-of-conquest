@@ -39,6 +39,7 @@ public class PlantBuilder : MonoBehaviour
     public AudioClip StemClip;
     public AudioClip DragClip;
     public AudioSource DragSource;
+    public AudioClip LeafClip;
     private float DragSoundDelay;
     private Vector3 MousePositionPrevious;
 
@@ -216,6 +217,7 @@ public class PlantBuilder : MonoBehaviour
             }
             ResourceTracker.Nutrients -= (int)Mathf.Round(CurrentLeaf.transform.localScale.y * 50);
             FinishLeaf();
+            RootSource.PlayOneShot(LeafClip);
 
             HideBuildCost();
         }
