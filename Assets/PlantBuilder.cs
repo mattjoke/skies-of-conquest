@@ -11,7 +11,6 @@ public class PlantBuilder : MonoBehaviour
     Collider2D[] RockCollision;
 
     public GameObject RootPrefab;
-    public GameObject BranchPrefab;
 
     Camera MainCamera;
     Vector3 MouseDragStart;
@@ -40,7 +39,6 @@ public class PlantBuilder : MonoBehaviour
     {
         MousePosition = MainCamera.ScreenToWorldPoint(Input.mousePosition);
         MousePosition.z = 20;
-        RootVerified = true;
         if (Input.GetMouseButtonDown(0))
         {
             MouseDragStart = MousePosition;
@@ -49,44 +47,19 @@ public class PlantBuilder : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            VerifyRoot();
             MouseDragging = false;
+            VerifyRoot();
             if (!RootVerified)
             {
                 Destroy(CurrentRoot);
                 return;
             }
-            CurrentRoot.GetComponent<SpriteRenderer>().color = Color.white;
         }
         else if (MouseDragging)
         {
             PlaceRoot(MouseDragStart, MousePosition);
             VerifyRoot();
         }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            MouseDragStart = MousePosition;
-            CreateRoot(MouseDragStart);
-            MouseDragging = true;
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            VerifyRoot();
-            MouseDragging = false;
-            if (!RootVerified)
-            {
-                Destroy(CurrentRoot);
-                return;
-            }
-            CurrentRoot.GetComponent<SpriteRenderer>().color = Color.white;
-        }
-        else if (MouseDragging)
-        {
-            PlaceRoot(MouseDragStart, MousePosition);
-            VerifyRoot();
-        }
-
     }
 
     void VerifyRoot()
@@ -97,14 +70,14 @@ public class PlantBuilder : MonoBehaviour
             PlantFilter,
             RockCollision
         );
-        if (nContacts > 0)
+        if (nContacts != 1)
         {
             RootVerified = false;
         }
         nContacts = CurrentRoot.GetComponent<BoxCollider2D>().OverlapCollider(
-           RockFilter,
-           RockCollision
-       );
+             RockFilter,
+             RockCollision
+         );
         if (nContacts != 0)
         {
             RootVerified = false;
@@ -114,16 +87,19 @@ public class PlantBuilder : MonoBehaviour
                 else RockCollision[i].GetComponent<SpriteRenderer>().color = Color.red;
             }
         }
+        ShowVerified();
+    }
 
-        /*
-
-        for (int i = 0; i < nContacts; i++)
+    void ShowVerified()
+    {
+        if (RootVerified)
         {
-            if (Random.Range(0, 2) == 0) RockCollision[i].GetComponent<SpriteRenderer>().color = Color.white;
-            else 
-            RockCollision[i].GetComponent<SpriteRenderer>().color = Color.red;
+            CurrentRoot.GetComponent<SpriteRenderer>().color = Color.white;
         }
-         */
+        else
+        {
+            CurrentRoot.GetComponent<SpriteRenderer>().color = Color.red;
+        }
     }
 
     void CreateRoot(Vector3 Position)
