@@ -163,6 +163,9 @@ public class PlantBuilder : MonoBehaviour
         if (nContacts != 1)
         {
             RootVerified = false;
+<<<<<<< HEAD
+            if(ReportReason) Debug.Log("Too many or few plants: " + nContacts.ToString());
+=======
             if (ReportReason)
             {
                 Debug.Log(nContacts);
@@ -172,6 +175,7 @@ public class PlantBuilder : MonoBehaviour
                     Debug.Log(RockCollision[i].GetComponent<SpriteRenderer>().gameObject.name);
                 }
             }
+>>>>>>> origin/tommi
         }
         nContacts = CurrentRoot.GetComponent<BoxCollider2D>().OverlapCollider(
              RockFilter,
