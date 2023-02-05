@@ -26,11 +26,11 @@ public class CameraMover : MonoBehaviour
 
         if (Input.GetAxis("Mouse ScrollWheel") > 0)
         {
-            MoveCamera(10);
+            MoveCamera(20);
         }
         else if (Input.GetAxis("Mouse ScrollWheel") < 0)
         {
-            MoveCamera(-10);
+            MoveCamera(-20);
         }
     }
 
