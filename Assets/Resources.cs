@@ -62,14 +62,15 @@ public class Resources : MonoBehaviour
     void TickEnergySunlight()
     {
         //Sunlight = UnityEngine.Random.Range(0f, 1f);
-        if (Energy > Sunlight)
+        if (Energy > Sunlight - .05f)
         {
             Energy -= 0.01f;
         }
-        if (Energy < Sunlight)
+        if (Energy < Sunlight - .05f)
         {
-            Energy = Sunlight;
+            Energy = Sunlight - .05f;
         }
+        Energy = Mathf.Max(0, Energy * 1.053f);
     }
 
     void TickNutrientExtraction()

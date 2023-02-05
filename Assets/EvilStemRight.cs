@@ -16,12 +16,20 @@ public class EvilStemRight : MonoBehaviour
 
     GameObject CurrentLeaf;
     GameObject CurrentShade;
+
+    public float TargetPoint;
+
+    private void Start()
+    {
+        TargetPoint = Random.Range(0f, 10f) + 10f;
+    }
+
     void Update()
     {
         if(Active)
         {
             transform.position = new Vector3(transform.position.x - Time.deltaTime, transform.position.y, transform.position.z);
-            if(Random.Range(1,1000) == 1 || transform.GetChild(1).transform.position.x < 10)
+            if(transform.GetChild(1).transform.position.x < TargetPoint)
             {
                 if(!Root)
                 {
