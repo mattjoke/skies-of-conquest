@@ -10,8 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2310563344010740718}
   - component: {fileID: 2310563344010740717}
-  - component: {fileID: 1630120206458315876}
-  - component: {fileID: 1630120206458315879}
+  - component: {fileID: -3692441717844799256}
   m_Layer: 0
   m_Name: stem
   m_TagString: Untagged
@@ -74,7 +73,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 23
   m_Sprite: {fileID: 21300000, guid: a8e972eed4fc2274cbadcdaccf30004a, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -86,8 +85,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &1630120206458315876
-PolygonCollider2D:
+--- !u!61 &-3692441717844799256
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -109,23 +108,6 @@ PolygonCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Points:
-    m_Paths:
-    - - {x: -0.3125, y: 0.625}
-      - {x: -0.3125, y: -0.625}
-      - {x: 0.3125, y: -0.625}
-      - {x: 0.3125, y: 0.625}
---- !u!114 &1630120206458315879
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2310563344010740715}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02ab97de71983f14dba018c568c9ed88, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stemPrefab: {fileID: 2310563344010740715}
-  leafPrefab: {fileID: 1170339450040279846, guid: a034a88d87e36f64c9f1435f6afe017d, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.625, y: 1.25}
+  m_EdgeRadius: 0
