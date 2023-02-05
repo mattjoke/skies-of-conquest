@@ -169,6 +169,7 @@ public class PlantBuilder : MonoBehaviour
             DisplayBuildCost((int)Mathf.Round(CurrentLeaf.transform.localScale.y * 50), MousePosition);
             VerifyLeaf();
         }
+        CheckLeaves();
     }
 
     void VerifyRoot(bool ReportReason)
@@ -399,7 +400,8 @@ public class PlantBuilder : MonoBehaviour
             {
                 CompareLeaves(AllLeaves[i], AllLeaves[j]);
             }
-            SunlightPercentage += GetSunPercentage(AllLeaves[i]) / 4f;
+            if (AllLeaves[i].GetComponent<Leaf>().PlayerOwned) SunlightPercentage += GetSunPercentage(AllLeaves[i]) / 4f;
+            
         }
         ResourceTracker.Sunlight = SunlightPercentage;
     }
