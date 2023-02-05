@@ -21,6 +21,11 @@ public class PlantBuilder : MonoBehaviour
     public GameObject LeafPrefab;
     public GameObject NumberDisplay;
 
+    public AudioSource RootSource;
+    public AudioSource StemSource;
+    public AudioClip RootClip;
+    public AudioClip StemClip;
+
     GameObject CostDisplay;
 
     Camera MainCamera;
@@ -98,6 +103,7 @@ public class PlantBuilder : MonoBehaviour
                         RockCollision[i].GetComponent<Nutrient>().IsTapped = true;
                     }
                 }
+                RootSource.PlayOneShot(RootClip);
             }
             else
             {
