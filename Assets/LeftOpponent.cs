@@ -21,9 +21,9 @@ public class LeftOpponent : MonoBehaviour
         if (ResourceTracker.LeftOpponentNutrients >= 10)
         {
             int Action = Random.Range(1, 5);
-            if(Action == 1)
+            if(Action == 1 & Random.Range(1,5) == 1)
             {
-                CurrentStem = Instantiate(StemPrefab, new Vector3(-10, Height, 0), Quaternion.Euler(0,0,Random.Range(-90f,-45f)));
+                CurrentStem = Instantiate(StemPrefab, new Vector3(-15, Height, 0), Quaternion.Euler(0,0,Random.Range(-90f,-45f)));
                 CurrentStem.GetComponent<EvilStemLeft>().PlantBuilder = PlantBuilder;
             }
             else if (Action == 2)
@@ -34,10 +34,11 @@ public class LeftOpponent : MonoBehaviour
             {
                 Depth -= Random.Range(2, 5);
             }
-            else if (Action == 4)
+            else if (Action == 4 & Random.Range(1, 5) == 1)
             {
                 CurrentStem = Instantiate(RootPrefab, new Vector3(-10, Depth, 0), Quaternion.Euler(0, 0, Random.Range(-135f, -90f)));
                 CurrentStem.GetComponent<EvilStemLeft>().PlantBuilder = PlantBuilder;
+                CurrentStem.GetComponent<EvilStemLeft>().Root = true;
             }
             ResourceTracker.LeftOpponentNutrients -= 10;
         }
@@ -46,8 +47,8 @@ public class LeftOpponent : MonoBehaviour
             ActionCountdown -= Time.deltaTime;
             if(ActionCountdown <= 0)
             {
-                ResourceTracker.LeftOpponentNutrients += Random.Range(1, 5);
-                ActionCountdown = Random.Range(1f, 10f);
+                ResourceTracker.LeftOpponentNutrients += Random.Range(5, 10);
+                ActionCountdown = Random.Range(1f, 5f);
             }
         }
     }

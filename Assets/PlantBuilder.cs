@@ -37,6 +37,10 @@ public class PlantBuilder : MonoBehaviour
     public AudioSource StemSource;
     public AudioClip RootClip;
     public AudioClip StemClip;
+    public AudioClip DragClip;
+    public AudioSource DragSource;
+    private float DragSoundDelay;
+    private Vector3 MousePositionPrevious;
 
     public List<GameObject> AllLeaves;
 
@@ -107,6 +111,7 @@ public class PlantBuilder : MonoBehaviour
     {
         MousePosition = MainCamera.ScreenToWorldPoint(Input.mousePosition);
         MousePosition.z = 20;
+        DragSoundDelay -= Time.deltaTime;
         if (Input.GetMouseButtonDown(0))
         {
             MouseDragStart = MousePosition;
@@ -185,6 +190,14 @@ public class PlantBuilder : MonoBehaviour
 
             DisplayBuildCost((int)Mathf.Round(CurrentRoot.transform.localScale.y), MousePosition);
             VerifyRoot(false);
+
+            if (DragSoundDelay <= 0f && (MousePosition - MousePositionPrevious).magnitude > 0.05f)
+            {
+                DragSoundDelay = 0.08f;
+                DragSource.pitch = 0.75f + (MouseDragStart - MousePosition).magnitude * 0.1f;
+                DragSource.PlayOneShot(DragClip);
+                MousePositionPrevious = MousePosition;
+            }
         }
         else if (Input.GetMouseButtonDown(1))
         {

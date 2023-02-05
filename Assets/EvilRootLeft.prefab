@@ -138,7 +138,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: acb6e2798b029cf4181ad02afda33d02, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ca6148be630fa204389f9c1fba1bbb3c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -161,6 +161,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ade04d572c040144bbb1357275ef512f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Root: 0
   LeafPrefab: {fileID: 1936449943048973111, guid: bf4221157491e1f40a3bfbd40c095a5d, type: 3}
   ShadePrefab: {fileID: 1856185718328818782, guid: 307152d195b1d5b43812edbf3fb4a503, type: 3}
   PlantBuilder: {fileID: 0}
