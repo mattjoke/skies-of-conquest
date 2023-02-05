@@ -6,8 +6,10 @@ public class PlantBuilder : MonoBehaviour
 {
     [SerializeField] private LayerMask RockMask;
     [SerializeField] private LayerMask PlantMask;
+    [SerializeField] private LayerMask NutrientMask;
     ContactFilter2D RockFilter;
     ContactFilter2D PlantFilter;
+    ContactFilter2D NutrientFilter;
     Collider2D[] RockCollision;
 
     public GameObject RootPrefab;
@@ -23,10 +25,13 @@ public class PlantBuilder : MonoBehaviour
     {
         RockMask |= (1 << LayerMask.NameToLayer("Rock"));
         PlantMask |= (1 << LayerMask.NameToLayer("Plant"));
+        NutrientMask |= (1 << LayerMask.NameToLayer("Nutrient"));
         RockFilter = new ContactFilter2D();
         RockFilter.SetLayerMask(RockMask);
         PlantFilter = new ContactFilter2D();
         PlantFilter.SetLayerMask(PlantMask);
+        NutrientFilter = new ContactFilter2D();
+        NutrientFilter.SetLayerMask(NutrientMask);
         RockCollision = new Collider2D[10];
 
         MainCamera = Camera.main;
@@ -49,7 +54,22 @@ public class PlantBuilder : MonoBehaviour
         {
             MouseDragging = false;
             VerifyRoot();
-            if (!RootVerified)
+            if (RootVerified)
+            {
+                int nContacts = CurrentRoot.GetComponent<BoxCollider2D>().OverlapCollider(
+                     NutrientFilter,
+                     RockCollision
+                 );
+                if (nContacts != 0)
+                {
+                    for (int i = 0; i < nContacts; i++)
+                    {
+                        RockCollision[i].GetComponent<Nutrient>().PlayerTaps++;
+                        RockCollision[i].GetComponent<Nutrient>().IsTapped = true;
+                    }
+                }
+            }
+            else
             {
                 Destroy(CurrentRoot);
                 return;

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1603321167229565899}
   - component: {fileID: 2830052054327696687}
   - component: {fileID: 6208538542919300408}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: YellowNutrient
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -49,6 +49,11 @@ MonoBehaviour:
   NutrientsLeft: 200
   DrainSpeed: 20
   Unlimited: 0
+  Empty: 0
+  IsTapped: 0
+  PlayerTaps: 0
+  LeftOpponentTaps: 0
+  RightOpponentTaps: 0
 --- !u!212 &2830052054327696687
 SpriteRenderer:
   m_ObjectHideFlags: 0
