@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class EvilStemLeft : MonoBehaviour
@@ -9,6 +10,10 @@ public class EvilStemLeft : MonoBehaviour
     public GameObject LeafPrefab;
     public GameObject ShadePrefab;
     public PlantBuilder PlantBuilder;
+
+    public AudioSource LeafSource;
+    public AudioClip LeafClip;
+
     GameObject CurrentLeaf;
     GameObject CurrentShade;
     void Update()
@@ -23,6 +28,7 @@ public class EvilStemLeft : MonoBehaviour
                     CreateLeaf(transform.GetChild(0).transform.position);
                     PlaceLeaf(transform.GetChild(0).transform.position);
                     FinishLeaf();
+                    LeafSource.PlayOneShot(LeafClip);
                 }
                 Active = false;
             }

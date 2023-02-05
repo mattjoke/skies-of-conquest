@@ -268,6 +268,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1905712032}
     - target: {fileID: 7183137613580870190, guid: 83397a0c165285e4085ec34ae7db45a6, type: 3}
+      propertyPath: LeafClip
+      value: 
+      objectReference: {fileID: 8300000, guid: bdc97a625dd49ec49b19a42c1cfd366c, type: 3}
+    - target: {fileID: 7183137613580870190, guid: 83397a0c165285e4085ec34ae7db45a6, type: 3}
       propertyPath: RootClip
       value: 
       objectReference: {fileID: 8300000, guid: eee08aac94fb0cc40b2a6f7f55ec0a1a, type: 3}
