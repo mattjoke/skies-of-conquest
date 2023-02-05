@@ -259,6 +259,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7183137613580870190, guid: 83397a0c165285e4085ec34ae7db45a6, type: 3}
+      propertyPath: NumberDisplay
+      value: 
+      objectReference: {fileID: 2184403302218258717, guid: 967938a4dd0e4304e9113a65d8f2625d, type: 3}
+    - target: {fileID: 7183137613580870190, guid: 83397a0c165285e4085ec34ae7db45a6, type: 3}
+      propertyPath: ResourceTracker
+      value: 
+      objectReference: {fileID: 1168521286}
     - target: {fileID: 7183137613580870191, guid: 83397a0c165285e4085ec34ae7db45a6, type: 3}
       propertyPath: m_Name
       value: PlantBuilder
@@ -1708,15 +1716,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8879656704128078283, guid: f9fa3f06f3f9dba479a53331d4613e1b, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8879656704128078283, guid: f9fa3f06f3f9dba479a53331d4613e1b, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8879656704128078283, guid: f9fa3f06f3f9dba479a53331d4613e1b, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8879656704128078283, guid: f9fa3f06f3f9dba479a53331d4613e1b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x

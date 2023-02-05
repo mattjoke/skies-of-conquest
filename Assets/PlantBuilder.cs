@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlantBuilder : MonoBehaviour
 {
@@ -12,7 +14,11 @@ public class PlantBuilder : MonoBehaviour
     ContactFilter2D NutrientFilter;
     Collider2D[] RockCollision;
 
+    public Resources ResourceTracker;
     public GameObject RootPrefab;
+    public GameObject NumberDisplay;
+
+    GameObject CostDisplay;
 
     Camera MainCamera;
     Vector3 MouseDragStart;
@@ -33,6 +39,9 @@ public class PlantBuilder : MonoBehaviour
         NutrientFilter = new ContactFilter2D();
         NutrientFilter.SetLayerMask(NutrientMask);
         RockCollision = new Collider2D[10];
+
+        CostDisplay = Instantiate(NumberDisplay, Vector3.zero, Quaternion.identity);
+        HideBuildCost();
 
         MainCamera = Camera.main;
 
@@ -56,6 +65,7 @@ public class PlantBuilder : MonoBehaviour
             VerifyRoot();
             if (RootVerified)
             {
+                ResourceTracker.Nutrients -= (int)Mathf.Round(CurrentRoot.transform.localScale.y);
                 int nContacts = CurrentRoot.GetComponent<BoxCollider2D>().OverlapCollider(
                      NutrientFilter,
                      RockCollision
@@ -74,10 +84,12 @@ public class PlantBuilder : MonoBehaviour
                 Destroy(CurrentRoot);
                 return;
             }
+            HideBuildCost();
         }
         else if (MouseDragging)
         {
             PlaceRoot(MouseDragStart, MousePosition);
+            DisplayBuildCost((int)Mathf.Round(CurrentRoot.transform.localScale.y),MousePosition);
             VerifyRoot();
         }
     }
@@ -86,6 +98,7 @@ public class PlantBuilder : MonoBehaviour
     {
         RootVerified = true;
         if (CurrentRoot.transform.localScale.y < 2) RootVerified = false;
+        if (Mathf.Round(CurrentRoot.transform.localScale.y) > ResourceTracker.Nutrients) RootVerified = false;
         //int nContacts = Physics2D.OverlapPointNonAlloc(new Vector2(MousePosition.x, MousePosition.y),RockCollision,PlantMask);
         int nContacts = CurrentRoot.GetComponent<BoxCollider2D>().OverlapCollider(
             PlantFilter,
@@ -135,5 +148,15 @@ public class PlantBuilder : MonoBehaviour
             90f + Mathf.Rad2Deg * Mathf.Atan2(EndPosition.y - StartPosition.y, EndPosition.x - StartPosition.x)
         );
         CurrentRoot.transform.localScale = new Vector3(1, (EndPosition - StartPosition).magnitude * 0.8f + 0.25f, 1);
+    }
+
+    void DisplayBuildCost(int amount, Vector3 position)
+    {
+        CostDisplay.transform.position = position;
+        CostDisplay.transform.GetChild(0).transform.GetChild(0).GetComponent<TMP_Text>().text = "-" + amount.ToString();
+    }
+    void HideBuildCost()
+    {
+        CostDisplay.transform.position = new Vector3(-100,-100,0);
     }
 }
