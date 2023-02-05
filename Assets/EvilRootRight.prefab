@@ -72,10 +72,11 @@ GameObject:
   m_Component:
   - component: {fileID: 9020792754720468913}
   - component: {fileID: 9020792754720468918}
-  - component: {fileID: 9020792754720468919}
-  - component: {fileID: 294191220160231897}
+  - component: {fileID: 4172465750316966279}
+  - component: {fileID: 9050333625465479565}
+  - component: {fileID: -3171300293214141931}
   m_Layer: 6
-  m_Name: EvilStemLeft
+  m_Name: EvilRootRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -139,7 +140,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: acb6e2798b029cf4181ad02afda33d02, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ca6148be630fa204389f9c1fba1bbb3c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -150,7 +151,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &9020792754720468919
+--- !u!114 &4172465750316966279
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -159,16 +160,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 9020792754720468916}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ade04d572c040144bbb1357275ef512f, type: 3}
+  m_Script: {fileID: 11500000, guid: fe4539ae38e125d4b84f53e4136b4e34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Root: 0
-  LeafPrefab: {fileID: 1936449943048973111, guid: bf4221157491e1f40a3bfbd40c095a5d, type: 3}
+  LeafPrefab: {fileID: 1936449943048973111, guid: 74e8066c329596248ab25874990c2c68, type: 3}
   ShadePrefab: {fileID: 1856185718328818782, guid: 307152d195b1d5b43812edbf3fb4a503, type: 3}
   PlantBuilder: {fileID: 0}
-  LeafSource: {fileID: 294191220160231897}
+  LeafSource: {fileID: -3171300293214141931}
   LeafClip: {fileID: 8300000, guid: 1aa8eeb70b41f804a94238dd6a448bf5, type: 3}
---- !u!82 &294191220160231897
+--- !u!61 &9050333625465479565
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9020792754720468916}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.625, y: 1.25}
+    newSize: {x: 0.625, y: 1.25}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.625, y: 1.25}
+  m_EdgeRadius: 0
+--- !u!82 &-3171300293214141931
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

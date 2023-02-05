@@ -164,15 +164,12 @@ public class PlantBuilder : MonoBehaviour
                 if (nContacts == 1)
                 {
                     Debug.Log(Vector3.Magnitude(endpoint.transform.position - MouseDragStart));
-                    if (Vector3.Magnitude(endpoint.transform.position - MouseDragStart) < 2)
+                    if (Vector3.Magnitude(endpoint.transform.position - MouseDragStart) < 20.25)
                     {
                         endpoint.transform.position = MousePosition;
                     }
                     else
                     {
-                        Debug.Log(endpoint.transform.position);
-                        Debug.Log(MouseDragStart);
-                        Debug.Log(MousePosition);
                         endpoint.transform.position = MouseDragStart;
                     }
                     endpoint.transform.rotation = CurrentRoot.transform.rotation;

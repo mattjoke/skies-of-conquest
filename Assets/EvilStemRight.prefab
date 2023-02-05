@@ -72,10 +72,10 @@ GameObject:
   m_Component:
   - component: {fileID: 9020792754720468913}
   - component: {fileID: 9020792754720468918}
-  - component: {fileID: 9020792754720468919}
+  - component: {fileID: -5890242550813913948}
   - component: {fileID: 294191220160231897}
   m_Layer: 6
-  m_Name: EvilStemLeft
+  m_Name: EvilStemRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -150,7 +150,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &9020792754720468919
+--- !u!114 &-5890242550813913948
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -159,11 +159,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 9020792754720468916}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ade04d572c040144bbb1357275ef512f, type: 3}
+  m_Script: {fileID: 11500000, guid: fe4539ae38e125d4b84f53e4136b4e34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Root: 0
-  LeafPrefab: {fileID: 1936449943048973111, guid: bf4221157491e1f40a3bfbd40c095a5d, type: 3}
+  LeafPrefab: {fileID: 1936449943048973111, guid: 74e8066c329596248ab25874990c2c68, type: 3}
   ShadePrefab: {fileID: 1856185718328818782, guid: 307152d195b1d5b43812edbf3fb4a503, type: 3}
   PlantBuilder: {fileID: 0}
   LeafSource: {fileID: 294191220160231897}
