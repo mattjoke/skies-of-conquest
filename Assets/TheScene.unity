@@ -1739,6 +1739,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9048460892510975463, guid: f9fa3f06f3f9dba479a53331d4613e1b, type: 3}
+      propertyPath: MapCamera
+      value: 
+      objectReference: {fileID: 2133842641}
+    - target: {fileID: 9048460892510975463, guid: f9fa3f06f3f9dba479a53331d4613e1b, type: 3}
       propertyPath: HealthSlider
       value: 
       objectReference: {fileID: 1945688122}
