@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Resources : MonoBehaviour
@@ -13,6 +14,8 @@ public class Resources : MonoBehaviour
     public int Nutrients;
     public Slider HealthSlider;
     public TMP_Text NutrientText;
+    public GameObject NumberPopup;
+    public Camera MapCamera;
     public List<GameObject> NutrientDeposits;
 
     public float LeftOpponentSunlight;
@@ -20,16 +23,15 @@ public class Resources : MonoBehaviour
     public int LeftOpponentNutrients;
     public int RightOpponentNutrients;
 
-    float ExtractionTimerLong = 0;
+    public float ExtractionTimerLong = 0;
     float ExtractionTimerLongMax = 2;
-    float ExtractionTimerShort = 0;
-    float ExtractionTimerShortMax = 0.1f;
     bool Extracting = false;
     int CurrentExtractionTarget = 0;
 
     void Start()
     {
         Reset();
+        Energy = 1f;
     }
 
     public void Reset()
@@ -44,6 +46,11 @@ public class Resources : MonoBehaviour
         TickEnergySunlight();
         TickNutrientExtraction();
         UpdateHUD();
+
+        if (Energy <= 0)
+        {
+            SceneManager.LoadScene("Game Over");
+        }
     }
 
     void UpdateHUD()
@@ -54,14 +61,14 @@ public class Resources : MonoBehaviour
 
     void TickEnergySunlight()
     {
-        Sunlight = UnityEngine.Random.Range(0f, 1f);
-        if (Energy > Sunlight)
+        //Sunlight = UnityEngine.Random.Range(0f, 1f);
+        if (Energy > Sunlight - .05f)
         {
             Energy -= 0.01f;
         }
-        if (Energy < Sunlight)
+        if (Energy < Sunlight - .05f)
         {
-            Energy = Sunlight;
+            Energy = Mathf.Max(0, Sunlight - .05f);
         }
     }
 
@@ -82,30 +89,41 @@ public class Resources : MonoBehaviour
             }
             else
             {
-                ExtractionTimerShort += Time.deltaTime;
-                if (ExtractionTimerShort >= ExtractionTimerShortMax)
+                Nutrient NutrientScript = NutrientDeposits[CurrentExtractionTarget].GetComponent<Nutrient>();
+                if (!NutrientScript.Empty && NutrientScript.IsTapped)
                 {
-                    ExtractionTimerShort -= ExtractionTimerShortMax;
-                    Nutrient NutrientScript = NutrientDeposits[CurrentExtractionTarget].GetComponent<Nutrient>();
-                    if (!NutrientScript.Empty && NutrientScript.IsTapped)
+                    if (NutrientScript.PlayerTaps != 0)
                     {
-                        Nutrients += NutrientScript.DrainSpeed * NutrientScript.PlayerTaps;
-                        LeftOpponentNutrients += NutrientScript.DrainSpeed * NutrientScript.LeftOpponentTaps;
-                        RightOpponentNutrients += NutrientScript.DrainSpeed * NutrientScript.RightOpponentTaps;
-                        Debug.Log("Left nutrients: " + LeftOpponentNutrients.ToString() + "     Right nutrients: " + RightOpponentNutrients.ToString());
-                        if (!NutrientScript.Unlimited)
+                        DisplayResourceGain(
+                            NutrientScript.DrainSpeed * NutrientScript.PlayerTaps,
+                            NutrientScript.transform.position
+                        );
+                    }
+                    Nutrients += NutrientScript.DrainSpeed * NutrientScript.PlayerTaps;
+                    LeftOpponentNutrients += NutrientScript.DrainSpeed * NutrientScript.LeftOpponentTaps;
+                    RightOpponentNutrients += NutrientScript.DrainSpeed * NutrientScript.RightOpponentTaps;
+                    Debug.Log("Left nutrients: " + LeftOpponentNutrients.ToString() + "     Right nutrients: " + RightOpponentNutrients.ToString());
+                    if (!NutrientScript.Unlimited)
+                    {
+                        NutrientScript.NutrientsLeft -= NutrientScript.DrainSpeed *
+                            (NutrientScript.PlayerTaps + NutrientScript.LeftOpponentTaps + NutrientScript.RightOpponentTaps);
+                        if(NutrientScript.NutrientsLeft <= 0)
                         {
-                            NutrientScript.NutrientsLeft -= NutrientScript.DrainSpeed *
-                                (NutrientScript.PlayerTaps + NutrientScript.LeftOpponentTaps + NutrientScript.RightOpponentTaps);
-                            if(NutrientScript.NutrientsLeft <= 0)
-                            {
-                                NutrientScript.Empty = true;
-                            }
+                            NutrientScript.Empty = true;
+                            GameObject obj = NutrientDeposits[CurrentExtractionTarget];
+                            obj.GetComponent<SpriteRenderer>().color = Color.gray;
+                            NutrientDeposits.Remove(obj);
                         }
                     }
-                    CurrentExtractionTarget++;
                 }
+                CurrentExtractionTarget++;
             }
         }
+    }
+
+    void DisplayResourceGain(int amount,Vector3 position)
+    {
+        GameObject PopupInstance = Instantiate(NumberPopup,position,Quaternion.identity);
+        PopupInstance.transform.GetChild(0).transform.GetChild(0).GetComponent<TMP_Text>().text = "+" + amount.ToString();
     }
 }

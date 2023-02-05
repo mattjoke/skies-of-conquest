@@ -8,15 +8,29 @@ public class CameraMover : MonoBehaviour
     public Camera MapCamera;
     public float CameraSpeed;
 
+
+    Vector3 MouseDragStart;
+    Vector3 MousePosition;
+
     void Update()
     {
-        if (Input.GetKey("w"))
+        if (Input.GetMouseButtonDown(2))
         {
-            MoveCamera(1f);
+            MouseDragStart = MainCamera.ScreenToWorldPoint(Input.mousePosition);
         }
-        else if (Input.GetKey("s"))
+        else if (Input.GetMouseButton(2))
         {
-            MoveCamera(-1f);
+            MousePosition = MainCamera.ScreenToWorldPoint(Input.mousePosition);
+            MoveCamera(MouseDragStart.y - MousePosition.y);
+        }
+
+        if (Input.GetAxis("Mouse ScrollWheel") > 0)
+        {
+            MoveCamera(20);
+        }
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0)
+        {
+            MoveCamera(-20);
         }
     }
 

@@ -12,17 +12,4 @@ public class Nutrient : MonoBehaviour
     public int PlayerTaps = 0;
     public int LeftOpponentTaps = 0;
     public int RightOpponentTaps = 0;
-
-    void Start()
-    {
-        
-    }
-
-    void Update()
-    {
-        if(!Empty && IsTapped)
-        {
-
-        }
-    }
 }

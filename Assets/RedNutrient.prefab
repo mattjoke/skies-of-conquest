@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1603321167229565899}
   - component: {fileID: 2830052054327696687}
   - component: {fileID: -766682456898571812}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: RedNutrient
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,9 +46,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8165c6f5430731144a09ae60a690839c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  NutrientsLeft: 500
-  DrainSpeed: 5
+  NutrientsLeft: 10
+  DrainSpeed: 1
   Unlimited: 0
+  Empty: 0
+  IsTapped: 0
+  PlayerTaps: 0
+  LeftOpponentTaps: 0
+  RightOpponentTaps: 0
 --- !u!212 &2830052054327696687
 SpriteRenderer:
   m_ObjectHideFlags: 0

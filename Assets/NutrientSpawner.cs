@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,10 +10,13 @@ public class NutrientSpawner : MonoBehaviour
     public GameObject YellowNutrientPrefab;
     public GameObject RockPrefab;
     public Resources ResourceTracker;
+    public Camera MapCamera;
 
-    void Start()
+    float SpawnerDepth = 5;
+
+    void Update()
     {
-        for(int i = 0;i < 10;i++)
+        while (SpawnerDepth < -MapCamera.transform.position.y + 50f)
         {
             SpawnRandom();
         }
@@ -20,30 +24,42 @@ public class NutrientSpawner : MonoBehaviour
 
     void SpawnRandom()
     {
-        int ItemType = Random.Range(1, 4);
+        SpawnerDepth += UnityEngine.Random.Range(0.1f, 1.1f);
+
+        // Create the wall of rocks every 30 units
+        if (Math.Round(SpawnerDepth) % 30 == 0)
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                Instantiate(RockPrefab, new Vector3(UnityEngine.Random.Range(-10f, 10f), -SpawnerDepth, 0), Quaternion.identity);
+            }
+            return;
+        }
+
+        int ItemType = UnityEngine.Random.Range(1, 100);
         GameObject ItemTypeObject = BlueNutrientPrefab;
-        if (ItemType == 1)
+        switch (ItemType)
         {
-            ItemTypeObject = BlueNutrientPrefab;
+            case <= 50:
+                ItemTypeObject = RockPrefab;
+                break;
+            case <= 80:
+                ItemTypeObject = BlueNutrientPrefab;
+                break;
+            case <= 95:
+                ItemTypeObject = RedNutrientPrefab;
+                break;
+            case <= 100:
+                ItemTypeObject = YellowNutrientPrefab;
+                break;
         }
-        else if (ItemType == 2)
-        {
-            ItemTypeObject = RedNutrientPrefab;
-        }
-        else if (ItemType == 3)
-        {
-            ItemTypeObject = YellowNutrientPrefab;
-        }
-        else if (ItemType == 4)
-        {
-            ItemTypeObject = RockPrefab;
-        }
+
         GameObject NewDeposit = Instantiate(
             ItemTypeObject,
-            new Vector3(Random.Range(-10f, 10f), -Random.Range(1f, 10f), 0),
+            new Vector3(UnityEngine.Random.Range(-10f, 10f), -SpawnerDepth, 0),
             Quaternion.identity
         );
-        if(ItemType != 4)
+        if (ItemType > 50)
         {
             ResourceTracker.NutrientDeposits.Add(NewDeposit);
         }
