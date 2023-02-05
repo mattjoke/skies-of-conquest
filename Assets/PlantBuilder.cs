@@ -28,6 +28,8 @@ public class PlantBuilder : MonoBehaviour
     public AudioClip RootClip;
     public AudioClip StemClip;
 
+    public List<GameObject> AllLeaves;
+
     GameObject CostDisplay;
 
     Camera MainCamera;
@@ -69,6 +71,8 @@ public class PlantBuilder : MonoBehaviour
         PlaceRoot(new Vector3(0, -0.3f, 0), new Vector3(0, 1.3f, 0));
         CreateLeaf(Vector3.zero);
         PlaceLeaf(new Vector3(0, 1f, 0));
+        FinishLeaf();
+        CheckLeaves();
     }
 
     void Update()
@@ -130,18 +134,8 @@ public class PlantBuilder : MonoBehaviour
                 return;
             }
             ResourceTracker.Nutrients -= (int)Mathf.Round(CurrentLeaf.transform.localScale.y * 50);
-            int nContacts = CurrentLeaf.GetComponent<BoxCollider2D>().OverlapCollider(
-                 NutrientFilter,
-                 RockCollision
-             );
-            if (nContacts != 0)
-            {
-                for (int i = 0; i < nContacts; i++)
-                {
-                    RockCollision[i].GetComponent<Nutrient>().PlayerTaps++;
-                    RockCollision[i].GetComponent<Nutrient>().IsTapped = true;
-                }
-            }
+            FinishLeaf();
+
             HideBuildCost();
         }
         else if (MouseDraggingLeaf)
@@ -250,6 +244,8 @@ public class PlantBuilder : MonoBehaviour
     {
         CurrentLeaf = Instantiate(LeafPrefab, Position, Quaternion.identity);
         CurrentShade = Instantiate(ShadePrefab, Position, Quaternion.identity);
+        CurrentLeaf.GetComponent<Leaf>().Shade = CurrentShade;
+        CurrentLeaf.GetComponent<Leaf>().PlayerOwned = true;
     }
 
     void PlaceLeaf(Vector3 position)
@@ -257,6 +253,8 @@ public class PlantBuilder : MonoBehaviour
         CurrentLeaf.transform.position = new Vector3(position.x + CurrentLeaf.transform.localScale.x * 1.8f, position.y);
         CurrentShade.transform.position = new Vector3(CurrentLeaf.transform.position.x, CurrentLeaf.transform.position.y / 2, position.y);
         CurrentShade.transform.localScale = new Vector3(12, CurrentLeaf.transform.position.y * 6.637f, 1);
+        CurrentLeaf.GetComponent<Leaf>().LeftEdgeStart = CurrentLeaf.transform.position.x - 1.65f;
+        CurrentLeaf.GetComponent<Leaf>().RightEdgeStart = CurrentLeaf.transform.position.x + 1.65f;
     }
 
     void PlaceRoot(Vector3 StartPosition, Vector3 EndPosition)
@@ -266,6 +264,91 @@ public class PlantBuilder : MonoBehaviour
             90f + Mathf.Rad2Deg * Mathf.Atan2(EndPosition.y - StartPosition.y, EndPosition.x - StartPosition.x)
         );
         CurrentRoot.transform.localScale = new Vector3(1, (EndPosition - StartPosition).magnitude * 0.8f + 0.25f, 1);
+    }
+
+    void FinishLeaf()
+    {
+        CurrentLeaf.GetComponent<Leaf>().LeftEdge = CurrentLeaf.GetComponent<Leaf>().LeftEdgeStart;
+        CurrentLeaf.GetComponent<Leaf>().RightEdge = CurrentLeaf.GetComponent<Leaf>().RightEdgeStart;
+        ResizeLeafShade(CurrentLeaf);
+        AllLeaves.Add(CurrentLeaf);
+        CheckLeaves();
+    }
+
+    void ResizeLeafShade(GameObject Leaf)
+    {
+        /*
+        Leaf LeafLeaf = Leaf.GetComponent<Leaf>();
+        Leaf.GetComponent<Leaf>().Shade.transform.localScale = new Vector3(
+            (LeafLeaf.RightEdge - LeafLeaf.LeftEdge) * 3.6363636363636363636363636363636f,
+            LeafLeaf.Shade.transform.localScale.y,
+            LeafLeaf.Shade.transform.localScale.z
+        );
+        LeafLeaf.Shade.transform.position = new Vector3(
+            (LeafLeaf.RightEdge + LeafLeaf.LeftEdge) / 2f + 0.05f,
+            LeafLeaf.Shade.transform.position.y,
+            LeafLeaf.Shade.transform.position.z
+        );
+        */
+    }
+
+    void CheckIfShrink(GameObject TopLeaf,GameObject BottomLeaf)
+    {
+        bool Happened = false;
+        Leaf TopLeafLeaf = TopLeaf.GetComponent<Leaf>();
+        Leaf BottomLeafLeaf = BottomLeaf.GetComponent<Leaf>();
+        if (
+            TopLeafLeaf.LeftEdge < BottomLeafLeaf.RightEdge &&
+            TopLeafLeaf.LeftEdge > BottomLeafLeaf.LeftEdge
+        )
+        {
+            Happened = true;
+            BottomLeafLeaf.RightEdge = TopLeafLeaf.LeftEdge;
+        }
+        else if (
+            TopLeafLeaf.RightEdge < BottomLeafLeaf.RightEdge &&
+            TopLeafLeaf.RightEdge > BottomLeafLeaf.LeftEdge
+        )
+        {
+            Happened = true;
+            BottomLeafLeaf.LeftEdge = TopLeafLeaf.RightEdge;
+        }
+        if (Happened)
+        {
+            ResizeLeafShade(BottomLeaf);
+        }
+    }
+
+    void CompareLeaves(GameObject LeafA,GameObject LeafB)
+    {
+        if(LeafA.transform.position.y > LeafB.transform.position.y)
+        {
+            CheckIfShrink(LeafA, LeafB);
+        }
+        else
+        {
+            CheckIfShrink(LeafB, LeafA);
+        }
+    }
+
+    float GetSunPercentage(GameObject Leaf)
+    {
+        Leaf LeafLeaf = Leaf.GetComponent<Leaf>();
+        return Mathf.Max(0,(LeafLeaf.RightEdge - LeafLeaf.LeftEdge) / (LeafLeaf.RightEdgeStart - LeafLeaf.LeftEdgeStart));
+    }
+
+    void CheckLeaves()
+    {
+        float SunlightPercentage = 0;
+        for (int i = 0; i < AllLeaves.Count; i++)
+        {
+            for (int j = i + 1; j < AllLeaves.Count; j++)
+            {
+                CompareLeaves(AllLeaves[i], AllLeaves[j]);
+            }
+            SunlightPercentage += GetSunPercentage(AllLeaves[i]) / 4f;
+        }
+        ResourceTracker.Sunlight = SunlightPercentage;
     }
 
     void ShowVerified()

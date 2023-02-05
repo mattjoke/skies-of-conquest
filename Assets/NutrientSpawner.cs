@@ -13,11 +13,6 @@ public class NutrientSpawner : MonoBehaviour
 
     float SpawnerDepth = 1;
 
-    void Start()
-    {
-        
-    }
-
     void Update()
     {
         while(SpawnerDepth < -MapCamera.transform.position.y + 50f)
