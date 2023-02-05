@@ -280,6 +280,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1793774855}
     - target: {fileID: 7183137613580870190, guid: 83397a0c165285e4085ec34ae7db45a6, type: 3}
+      propertyPath: ShadePrefab
+      value: 
+      objectReference: {fileID: 1856185718328818782, guid: 307152d195b1d5b43812edbf3fb4a503, type: 3}
+    - target: {fileID: 7183137613580870190, guid: 83397a0c165285e4085ec34ae7db45a6, type: 3}
       propertyPath: NumberDisplay
       value: 
       objectReference: {fileID: 2184403302218258717, guid: 967938a4dd0e4304e9113a65d8f2625d, type: 3}

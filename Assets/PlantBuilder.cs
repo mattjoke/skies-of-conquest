@@ -20,6 +20,7 @@ public class PlantBuilder : MonoBehaviour
     public Resources ResourceTracker;
     public GameObject RootPrefab;
     public GameObject LeafPrefab;
+    public GameObject ShadePrefab;
     public GameObject NumberDisplay;
 
     public AudioSource RootSource;
@@ -40,6 +41,7 @@ public class PlantBuilder : MonoBehaviour
     GameObject CurrentLeaf;
     bool LeafVerified = true;
     bool MouseDraggingLeaf;
+    GameObject CurrentShade;
 
     void Start()
     {
@@ -124,6 +126,7 @@ public class PlantBuilder : MonoBehaviour
             if (!LeafVerified)
             {
                 Destroy(CurrentLeaf);
+                Destroy(CurrentShade);
                 return;
             }
             ResourceTracker.Nutrients -= (int)Mathf.Round(CurrentLeaf.transform.localScale.y * 50);
@@ -246,12 +249,14 @@ public class PlantBuilder : MonoBehaviour
     void CreateLeaf(Vector3 Position)
     {
         CurrentLeaf = Instantiate(LeafPrefab, Position, Quaternion.identity);
+        CurrentShade = Instantiate(ShadePrefab, Position, Quaternion.identity);
     }
 
     void PlaceLeaf(Vector3 position)
     {
         CurrentLeaf.transform.position = new Vector3(position.x + CurrentLeaf.transform.localScale.x * 1.8f, position.y);
-
+        CurrentShade.transform.position = new Vector3(CurrentLeaf.transform.position.x, CurrentLeaf.transform.position.y / 2, position.y);
+        CurrentShade.transform.localScale = new Vector3(12, CurrentLeaf.transform.position.y * 6.637f, 1);
     }
 
     void PlaceRoot(Vector3 StartPosition, Vector3 EndPosition)
