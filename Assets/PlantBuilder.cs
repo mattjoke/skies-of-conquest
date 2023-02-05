@@ -214,11 +214,15 @@ public class PlantBuilder : MonoBehaviour
             {
                 Destroy(CurrentLeaf);
                 Destroy(CurrentShade);
-                return;
+                LeafVerified = false;
+                CurrentLeaf = null;
             }
-            ResourceTracker.Nutrients -= (int)Mathf.Round(CurrentLeaf.transform.localScale.y * 50);
-            FinishLeaf();
-            RootSource.PlayOneShot(LeafClip);
+            else
+            {
+                ResourceTracker.Nutrients -= (int)Mathf.Round(CurrentLeaf.transform.localScale.y * 50);
+                FinishLeaf();
+                RootSource.PlayOneShot(LeafClip);
+            }
 
             HideBuildCost();
         }
@@ -237,7 +241,7 @@ public class PlantBuilder : MonoBehaviour
         if (ReportReason) Debug.Log("Verifying");
         if (CurrentRoot == null) RootVerified = false;
         if (CurrentRoot.transform.localScale.y < 0.5f) RootVerified = false;
-        if (CurrentLeaf.transform.position.y < 0) LeafVerified = false;
+        if (CurrentLeaf == null || CurrentLeaf.transform.position.y < 0) LeafVerified = false;
         if (CurrentRoot == null)
         {
             RootVerified = false;
