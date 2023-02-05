@@ -11,10 +11,14 @@ public class PlantBuilder : MonoBehaviour
     [SerializeField] private LayerMask PlantMask;
     [SerializeField] private LayerMask LeafMask;
     [SerializeField] private LayerMask NutrientMask;
+    [SerializeField] private LayerMask GroundMask;
+    [SerializeField] private LayerMask SkyMask;
     ContactFilter2D RockFilter;
     ContactFilter2D PlantFilter;
     ContactFilter2D LeafFilter;
     ContactFilter2D NutrientFilter;
+    ContactFilter2D GroundFilter;
+    ContactFilter2D SkyFilter;
     Collider2D[] RockCollision;
 
     public Resources ResourceTracker;
@@ -22,6 +26,8 @@ public class PlantBuilder : MonoBehaviour
     public GameObject LeafPrefab;
     public GameObject ShadePrefab;
     public GameObject NumberDisplay;
+    public GameObject Ground;
+    public GameObject Sky;
 
     public AudioSource RootSource;
     public AudioSource StemSource;
@@ -43,12 +49,18 @@ public class PlantBuilder : MonoBehaviour
     bool MouseDraggingLeaf;
     GameObject CurrentShade;
 
+    bool RootIsUnderground = false;
+
     void Start()
     {
         RockMask |= (1 << LayerMask.NameToLayer("Rock"));
         PlantMask |= (1 << LayerMask.NameToLayer("Plant"));
         LeafMask |= (1 << LayerMask.NameToLayer("Leaf"));
         NutrientMask |= (1 << LayerMask.NameToLayer("Nutrient"));
+        GroundMask |= (1 << LayerMask.NameToLayer("Ground"));
+        SkyMask |= (1 << LayerMask.NameToLayer("Sky"));
+        GroundFilter = new ContactFilter2D();
+        GroundFilter.SetLayerMask(GroundMask);
         RockFilter = new ContactFilter2D();
         RockFilter.SetLayerMask(RockMask);
         PlantFilter = new ContactFilter2D();
@@ -57,6 +69,8 @@ public class PlantBuilder : MonoBehaviour
         LeafFilter.SetLayerMask(LeafMask);
         NutrientFilter = new ContactFilter2D();
         NutrientFilter.SetLayerMask(NutrientMask);
+        SkyFilter = new ContactFilter2D();
+        SkyFilter.SetLayerMask(SkyMask);
 
         RockCollision = new Collider2D[10];
 
@@ -78,6 +92,15 @@ public class PlantBuilder : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             MouseDragStart = MousePosition;
+            if (MousePosition.y < 0)
+            {
+                RootIsUnderground = true;
+            }
+            else
+            {
+                RootIsUnderground = false;
+            }
+            
             CreateRoot(MouseDragStart);
             MouseDragging = true;
         }
@@ -107,11 +130,13 @@ public class PlantBuilder : MonoBehaviour
                 Destroy(CurrentRoot);
             }
             HideBuildCost();
+            RootIsUnderground = false;
         }
         else if (MouseDragging)
         {
             PlaceRoot(MouseDragStart, MousePosition);
-            DisplayBuildCost((int)Mathf.Round(CurrentRoot.transform.localScale.y),MousePosition);
+            
+            DisplayBuildCost((int)Mathf.Round(CurrentRoot.transform.localScale.y), MousePosition);
             VerifyRoot(false);
         }
         else if (Input.GetMouseButtonDown(1))
@@ -157,9 +182,38 @@ public class PlantBuilder : MonoBehaviour
         RootVerified = true;
         if (ReportReason) Debug.Log("Verifying");
         if (CurrentRoot.transform.localScale.y < 2) RootVerified = false;
+        if (CurrentLeaf.transform.position.y < 0) LeafVerified = false;
         if (Mathf.Round(CurrentRoot.transform.localScale.y) > ResourceTracker.Nutrients) RootVerified = false;
+
+        int nContacts;
+        // Check if root is in ground
+        if (RootIsUnderground)
+        {
+            nContacts = CurrentRoot.GetComponent<BoxCollider2D>().OverlapCollider(
+              SkyFilter,
+               RockCollision
+            );
+            if (nContacts != 0)
+            {
+                RootVerified = false;
+                if (ReportReason) Debug.Log("Root in Sky");
+            }
+        }
+        else
+        {
+            nContacts = CurrentRoot.GetComponent<BoxCollider2D>().OverlapCollider(
+              GroundFilter,
+              RockCollision
+            );
+            if (nContacts != 0)
+            {
+                RootVerified = false;
+                if (ReportReason) Debug.Log("Root in gound");
+            }
+        }
+
         //int nContacts = Physics2D.OverlapPointNonAlloc(new Vector2(MousePosition.x, MousePosition.y),RockCollision,PlantMask);
-        int nContacts = CurrentRoot.GetComponent<BoxCollider2D>().OverlapCollider(
+        nContacts = CurrentRoot.GetComponent<BoxCollider2D>().OverlapCollider(
             PlantFilter,
             RockCollision
         );
@@ -168,7 +222,6 @@ public class PlantBuilder : MonoBehaviour
             RootVerified = false;
             if (ReportReason)
             {
-                Debug.Log(nContacts);
                 Debug.Log("Too many or few plants");
                 for (int i = 0; i < nContacts; i++)
                 {
@@ -271,7 +324,7 @@ public class PlantBuilder : MonoBehaviour
     void ShowVerified()
     {
         if (CurrentRoot == null) return;
-        if (RootVerified )
+        if (RootVerified)
         {
             CurrentRoot.GetComponent<SpriteRenderer>().color = Color.white;
         }
@@ -288,6 +341,11 @@ public class PlantBuilder : MonoBehaviour
         {
             CurrentLeaf.GetComponent<SpriteRenderer>().color = Color.red;
         }
+        
+        if (RootVerified && RootIsUnderground)
+        {
+            CurrentRoot.GetComponent<SpriteRenderer>().color = new Color(0.650f, 0.313f, 0f);
+        }
     }
 
     void DisplayBuildCost(int amount, Vector3 position)
@@ -297,6 +355,6 @@ public class PlantBuilder : MonoBehaviour
     }
     void HideBuildCost()
     {
-        CostDisplay.transform.position = new Vector3(-100,-100,0);
+        CostDisplay.transform.position = new Vector3(-100, -100, 0);
     }
 }
