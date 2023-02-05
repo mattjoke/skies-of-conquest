@@ -79,7 +79,10 @@ public class Resources : MonoBehaviour
             {
                 Extracting = false;
                 CurrentExtractionTarget = 0;
-                
+                GameObject obj = NutrientDeposits[CurrentExtractionTarget];
+                obj.GetComponent<SpriteRenderer>().color = Color.gray;
+                NutrientDeposits.Remove(obj);
+
             }
             else
             {

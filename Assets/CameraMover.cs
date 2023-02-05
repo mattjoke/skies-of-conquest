@@ -23,6 +23,15 @@ public class CameraMover : MonoBehaviour
             MousePosition = MainCamera.ScreenToWorldPoint(Input.mousePosition);
             MoveCamera(MouseDragStart.y - MousePosition.y);
         }
+
+        if (Input.GetAxis("Mouse ScrollWheel") > 0)
+        {
+            MoveCamera(10);
+        }
+        else if (Input.GetAxis("Mouse ScrollWheel") < 0)
+        {
+            MoveCamera(-10);
+        }
     }
 
     void MoveCamera(float direction)
