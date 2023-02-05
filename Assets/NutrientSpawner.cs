@@ -29,7 +29,7 @@ public class NutrientSpawner : MonoBehaviour
         // Create the wall of rocks every 30 units
         if (Math.Round(SpawnerDepth) % 30 == 0)
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 3; i++)
             {
                 Instantiate(RockPrefab, new Vector3(UnityEngine.Random.Range(-10f, 10f), -SpawnerDepth, 0), Quaternion.identity);
             }
