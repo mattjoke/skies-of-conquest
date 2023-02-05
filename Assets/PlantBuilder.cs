@@ -134,7 +134,7 @@ public class PlantBuilder : MonoBehaviour
             VerifyRoot(true);
             if (RootVerified)
             {
-                ResourceTracker.Nutrients -= (int)Mathf.Round(CurrentRoot.transform.localScale.y + MousePosition.y) ;
+                ResourceTracker.Nutrients -= (int)Mathf.Round(CurrentRoot.transform.localScale.y + Mathf.Max(0, MousePosition.y)) ;
                 int nContacts = CurrentRoot.GetComponent<BoxCollider2D>().OverlapCollider(
                      NutrientFilter,
                      RockCollision
@@ -190,7 +190,7 @@ public class PlantBuilder : MonoBehaviour
         {
             PlaceRoot(MouseDragStart, MousePosition);
 
-            DisplayBuildCost((int)Mathf.Round(CurrentRoot.transform.localScale.y + MousePosition.y), MousePosition);
+            DisplayBuildCost((int)Mathf.Round(CurrentRoot.transform.localScale.y + Mathf.Max(0, MousePosition.y)), MousePosition);
             VerifyRoot(false);
 
             if (DragSoundDelay <= 0f && (MousePosition - MousePositionPrevious).magnitude > 0.05f)
@@ -238,7 +238,7 @@ public class PlantBuilder : MonoBehaviour
         if (CurrentRoot == null) RootVerified = false;
         if (CurrentRoot.transform.localScale.y < 2) RootVerified = false;
         if (CurrentLeaf.transform.position.y < 0) LeafVerified = false;
-        if ((int)Mathf.Round(CurrentRoot.transform.localScale.y + MousePosition.y) > ResourceTracker.Nutrients) RootVerified = false;
+        if ((int)Mathf.Round(CurrentRoot.transform.localScale.y + Mathf.Max(0, MousePosition.y)) > ResourceTracker.Nutrients) RootVerified = false;
 
         int nContacts;
         // Check if root is in ground

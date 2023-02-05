@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NutrientsLeft: 8
-  DrainSpeed: 2
+  DrainSpeed: 1
   Unlimited: 0
   Empty: 0
   IsTapped: 0
