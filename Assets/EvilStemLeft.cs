@@ -5,6 +5,7 @@ using UnityEngine;
 public class EvilStemLeft : MonoBehaviour
 {
     bool Active = true;
+    public bool Root = false;
     public GameObject LeafPrefab;
     public GameObject ShadePrefab;
     public PlantBuilder PlantBuilder;
@@ -17,9 +18,12 @@ public class EvilStemLeft : MonoBehaviour
             transform.position = new Vector3(transform.position.x + Time.deltaTime, transform.position.y, transform.position.z);
             if(Random.Range(1,1000) == 1 || transform.GetChild(1).transform.position.x > -10)
             {
-                CreateLeaf(transform.GetChild(0).transform.position);
-                PlaceLeaf(transform.GetChild(0).transform.position);
-                FinishLeaf();
+                if(!Root)
+                {
+                    CreateLeaf(transform.GetChild(0).transform.position);
+                    PlaceLeaf(transform.GetChild(0).transform.position);
+                    FinishLeaf();
+                }
                 Active = false;
             }
         }
