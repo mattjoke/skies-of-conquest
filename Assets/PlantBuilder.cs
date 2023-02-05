@@ -235,9 +235,18 @@ public class PlantBuilder : MonoBehaviour
     {
         RootVerified = true;
         if (ReportReason) Debug.Log("Verifying");
-        if (CurrentRoot == null) RootVerified = false;
+        if (CurrentRoot == null)
+        {
+            RootVerified = false;
+            return;
+        }
+        if (CurrentLeaf == null)
+        {
+            LeafVerified = false;
+            return;
+        }
         if (CurrentRoot.transform.localScale.y < 2) RootVerified = false;
-        if (CurrentLeaf.transform.position.y < 0) LeafVerified = false;
+        //if (CurrentLeaf.transform.position.y < 0) LeafVerified = false;
         if ((int)Mathf.Round(CurrentRoot.transform.localScale.y + Mathf.Max(0, MousePosition.y)) > ResourceTracker.Nutrients) RootVerified = false;
 
         int nContacts;
@@ -322,6 +331,11 @@ public class PlantBuilder : MonoBehaviour
     void VerifyLeaf()
     {
         LeafVerified = true;
+        if (CurrentLeaf == null)
+        {
+            LeafVerified = false;
+            return;
+        }
         if (ResourceTracker.Nutrients < CurrentLeaf.transform.localScale.y * 50) LeafVerified = false;
         if (CurrentLeaf.transform.position.y < 0) LeafVerified = false;
         var nContacts = CurrentLeaf.GetComponent<BoxCollider2D>().OverlapCollider(
