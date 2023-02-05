@@ -248,7 +248,7 @@ public class PlantBuilder : MonoBehaviour
             LeafVerified = false;
             return;
         }
-        if (CurrentRoot.transform.localScale.y < 2) RootVerified = false;
+        if (CurrentRoot.transform.localScale.y < 0.5f) RootVerified = false;
         //if (CurrentLeaf.transform.position.y < 0) LeafVerified = false;
         if ((int)Mathf.Round(CurrentRoot.transform.localScale.y + Mathf.Max(0, MousePosition.y)) > ResourceTracker.Nutrients) RootVerified = false;
 
