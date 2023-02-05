@@ -22,10 +22,8 @@ public class Resources : MonoBehaviour
     public int LeftOpponentNutrients;
     public int RightOpponentNutrients;
 
-    float ExtractionTimerLong = 0;
+    public float ExtractionTimerLong = 0;
     float ExtractionTimerLongMax = 2;
-    float ExtractionTimerShort = 0;
-    float ExtractionTimerShortMax = 0.1f;
     bool Extracting = false;
     int CurrentExtractionTarget = 0;
 
@@ -84,36 +82,31 @@ public class Resources : MonoBehaviour
             }
             else
             {
-                ExtractionTimerShort += Time.deltaTime;
-                if (ExtractionTimerShort >= ExtractionTimerShortMax)
+                Nutrient NutrientScript = NutrientDeposits[CurrentExtractionTarget].GetComponent<Nutrient>();
+                if (!NutrientScript.Empty && NutrientScript.IsTapped)
                 {
-                    ExtractionTimerShort -= ExtractionTimerShortMax;
-                    Nutrient NutrientScript = NutrientDeposits[CurrentExtractionTarget].GetComponent<Nutrient>();
-                    if (!NutrientScript.Empty && NutrientScript.IsTapped)
+                    if (NutrientScript.PlayerTaps != 0)
                     {
-                        if(NutrientScript.PlayerTaps != 0)
+                        DisplayResourceGain(
+                            NutrientScript.DrainSpeed * NutrientScript.PlayerTaps,
+                            NutrientScript.transform.position
+                        );
+                    }
+                    Nutrients += NutrientScript.DrainSpeed * NutrientScript.PlayerTaps;
+                    LeftOpponentNutrients += NutrientScript.DrainSpeed * NutrientScript.LeftOpponentTaps;
+                    RightOpponentNutrients += NutrientScript.DrainSpeed * NutrientScript.RightOpponentTaps;
+                    Debug.Log("Left nutrients: " + LeftOpponentNutrients.ToString() + "     Right nutrients: " + RightOpponentNutrients.ToString());
+                    if (!NutrientScript.Unlimited)
+                    {
+                        NutrientScript.NutrientsLeft -= NutrientScript.DrainSpeed *
+                            (NutrientScript.PlayerTaps + NutrientScript.LeftOpponentTaps + NutrientScript.RightOpponentTaps);
+                        if(NutrientScript.NutrientsLeft <= 0)
                         {
-                            DisplayResourceGain(
-                                NutrientScript.DrainSpeed * NutrientScript.PlayerTaps,
-                                NutrientScript.transform.position
-                            );
-                        }
-                        Nutrients += NutrientScript.DrainSpeed * NutrientScript.PlayerTaps;
-                        LeftOpponentNutrients += NutrientScript.DrainSpeed * NutrientScript.LeftOpponentTaps;
-                        RightOpponentNutrients += NutrientScript.DrainSpeed * NutrientScript.RightOpponentTaps;
-                        Debug.Log("Left nutrients: " + LeftOpponentNutrients.ToString() + "     Right nutrients: " + RightOpponentNutrients.ToString());
-                        if (!NutrientScript.Unlimited)
-                        {
-                            NutrientScript.NutrientsLeft -= NutrientScript.DrainSpeed *
-                                (NutrientScript.PlayerTaps + NutrientScript.LeftOpponentTaps + NutrientScript.RightOpponentTaps);
-                            if(NutrientScript.NutrientsLeft <= 0)
-                            {
-                                NutrientScript.Empty = true;
-                            }
+                            NutrientScript.Empty = true;
                         }
                     }
-                    CurrentExtractionTarget++;
                 }
+                CurrentExtractionTarget++;
             }
         }
     }
