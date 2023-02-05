@@ -54,7 +54,7 @@ public class Resources : MonoBehaviour
 
     void TickEnergySunlight()
     {
-        Sunlight = UnityEngine.Random.Range(0f, 1f);
+        //Sunlight = UnityEngine.Random.Range(0f, 1f);
         if (Energy > Sunlight)
         {
             Energy -= 0.01f;
