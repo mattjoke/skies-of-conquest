@@ -13,16 +13,20 @@ public class PlantBuilder : MonoBehaviour
     [SerializeField] private LayerMask NutrientMask;
     [SerializeField] private LayerMask GroundMask;
     [SerializeField] private LayerMask SkyMask;
+    [SerializeField] private LayerMask BranchMask;
     ContactFilter2D RockFilter;
     ContactFilter2D PlantFilter;
     ContactFilter2D LeafFilter;
     ContactFilter2D NutrientFilter;
     ContactFilter2D GroundFilter;
     ContactFilter2D SkyFilter;
+    ContactFilter2D BranchFilter;
     Collider2D[] RockCollision;
 
     public Resources ResourceTracker;
     public GameObject RootPrefab;
+    public GameObject RootItemPrefab;
+    public GameObject RootItemThickPrefab;
     public GameObject LeafPrefab;
     public GameObject ShadePrefab;
     public GameObject NumberDisplay;
@@ -57,6 +61,8 @@ public class PlantBuilder : MonoBehaviour
 
     bool RootIsUnderground = false;
 
+    GameObject endpoint;
+
     void Start()
     {
         RockMask |= (1 << LayerMask.NameToLayer("Rock"));
@@ -65,6 +71,7 @@ public class PlantBuilder : MonoBehaviour
         NutrientMask |= (1 << LayerMask.NameToLayer("Nutrient"));
         GroundMask |= (1 << LayerMask.NameToLayer("Ground"));
         SkyMask |= (1 << LayerMask.NameToLayer("Sky"));
+        BranchMask |= (1 << LayerMask.NameToLayer("Branch"));
         GroundFilter = new ContactFilter2D();
         GroundFilter.SetLayerMask(GroundMask);
         RockFilter = new ContactFilter2D();
@@ -77,6 +84,8 @@ public class PlantBuilder : MonoBehaviour
         NutrientFilter.SetLayerMask(NutrientMask);
         SkyFilter = new ContactFilter2D();
         SkyFilter.SetLayerMask(SkyMask);
+        BranchFilter = new ContactFilter2D();
+        BranchFilter.SetLayerMask(BranchMask);
 
         RockCollision = new Collider2D[10];
 
@@ -85,8 +94,13 @@ public class PlantBuilder : MonoBehaviour
         CostDisplay = Instantiate(NumberDisplay, Vector3.zero, Quaternion.identity);
         HideBuildCost();
 
-        CreateRoot(Vector3.zero);
+        CurrentRoot = Instantiate(RootPrefab, Vector3.zero, Quaternion.identity);
         PlaceRoot(new Vector3(0, -0.3f, 0), new Vector3(0, 1.3f, 0));
+
+        // Place endpoint to top of root
+        endpoint = Instantiate(RootItemPrefab, new Vector3(0, -0.3f, 0), Quaternion.identity);
+
+
         CreateLeaf(Vector3.zero);
         PlaceLeaf(new Vector3(0, 1f, 0));
         FinishLeaf();
@@ -109,7 +123,7 @@ public class PlantBuilder : MonoBehaviour
             {
                 RootIsUnderground = false;
             }
-            
+
             CreateRoot(MouseDragStart);
             MouseDragging = true;
         }
@@ -132,19 +146,50 @@ public class PlantBuilder : MonoBehaviour
                         RockCollision[i].GetComponent<Nutrient>().IsTapped = true;
                     }
                 }
-                RootSource.PlayOneShot(RootClip);
+                if (RootIsUnderground)
+                {
+                    RootSource.PlayOneShot(RootClip);
+                }
+                else
+                {
+                    RootSource.PlayOneShot(StemClip);
+                }
+
+                // Main branch
+                nContacts = CurrentRoot.GetComponent<BoxCollider2D>().OverlapCollider(
+                    BranchFilter,
+                    RockCollision
+                );
+                if (nContacts == 1)
+                {
+                    if (Vector3.Magnitude(endpoint.transform.position - MouseDragStart) < 0.5)
+                    {
+                        endpoint.transform.position = MousePosition;
+                    }
+                    else
+                    {
+                        endpoint.transform.position = MouseDragStart;
+                    }
+                    CurrentRoot = Instantiate(RootItemThickPrefab, MousePosition, Quaternion.identity);
+                }
+                else
+                {
+
+                    CurrentRoot.transform.localScale = new Vector3(CurrentRoot.transform.localScale.x * 0.5f, CurrentRoot.transform.localScale.y, CurrentRoot.transform.localScale.z);
+                }
+
+
             }
             else
             {
                 Destroy(CurrentRoot);
             }
             HideBuildCost();
-            RootIsUnderground = false;
         }
         else if (MouseDragging)
         {
             PlaceRoot(MouseDragStart, MousePosition);
-            
+
             DisplayBuildCost((int)Mathf.Round(CurrentRoot.transform.localScale.y), MousePosition);
             VerifyRoot(false);
 
@@ -182,6 +227,7 @@ public class PlantBuilder : MonoBehaviour
             DisplayBuildCost((int)Mathf.Round(CurrentLeaf.transform.localScale.y * 50), MousePosition);
             VerifyLeaf();
         }
+        CheckLeaves();
     }
 
     void VerifyRoot(bool ReportReason)
@@ -232,7 +278,7 @@ public class PlantBuilder : MonoBehaviour
                 Debug.Log("Too many or few plants");
                 for (int i = 0; i < nContacts; i++)
                 {
-                    Debug.Log(RockCollision[i].GetComponent<SpriteRenderer>().gameObject.name);
+                    Debug.Log(RockCollision[i].GetComponent<SpriteRenderer>());
                 }
             }
         }
@@ -304,7 +350,13 @@ public class PlantBuilder : MonoBehaviour
 
     void CreateRoot(Vector3 Position)
     {
-        CurrentRoot = Instantiate(RootPrefab, Position, Quaternion.identity);
+        GameObject newObject = Instantiate(RootPrefab, Position, Quaternion.identity);
+
+        if (CurrentRoot != null && CurrentRoot.transform.position.y < 0)
+        {
+            CurrentRoot.GetComponent<SpriteRenderer>().color = new Color(0.650f, 0.313f, 0f);
+        }
+        CurrentRoot = newObject;
     }
     void CreateLeaf(Vector3 Position)
     {
@@ -312,6 +364,10 @@ public class PlantBuilder : MonoBehaviour
         CurrentShade = Instantiate(ShadePrefab, Position, Quaternion.identity);
         CurrentLeaf.GetComponent<Leaf>().Shade = CurrentShade;
         CurrentLeaf.GetComponent<Leaf>().PlayerOwned = true;
+        if (CurrentRoot != null && CurrentRoot.transform.position.y < 0)
+        {
+            CurrentRoot.GetComponent<SpriteRenderer>().color = new Color(0.650f, 0.313f, 0f);
+        }
     }
 
     void PlaceLeaf(Vector3 position)
@@ -358,7 +414,7 @@ public class PlantBuilder : MonoBehaviour
         */
     }
 
-    void CheckIfShrink(GameObject TopLeaf,GameObject BottomLeaf)
+    void CheckIfShrink(GameObject TopLeaf, GameObject BottomLeaf)
     {
         bool Happened = false;
         Leaf TopLeafLeaf = TopLeaf.GetComponent<Leaf>();
@@ -385,9 +441,9 @@ public class PlantBuilder : MonoBehaviour
         }
     }
 
-    void CompareLeaves(GameObject LeafA,GameObject LeafB)
+    void CompareLeaves(GameObject LeafA, GameObject LeafB)
     {
-        if(LeafA.transform.position.y > LeafB.transform.position.y)
+        if (LeafA.transform.position.y > LeafB.transform.position.y)
         {
             CheckIfShrink(LeafA, LeafB);
         }
@@ -400,7 +456,7 @@ public class PlantBuilder : MonoBehaviour
     float GetSunPercentage(GameObject Leaf)
     {
         Leaf LeafLeaf = Leaf.GetComponent<Leaf>();
-        return Mathf.Max(0,(LeafLeaf.RightEdge - LeafLeaf.LeftEdge) / (LeafLeaf.RightEdgeStart - LeafLeaf.LeftEdgeStart));
+        return Mathf.Max(0, (LeafLeaf.RightEdge - LeafLeaf.LeftEdge) / (LeafLeaf.RightEdgeStart - LeafLeaf.LeftEdgeStart));
     }
 
     void CheckLeaves()
@@ -412,7 +468,8 @@ public class PlantBuilder : MonoBehaviour
             {
                 CompareLeaves(AllLeaves[i], AllLeaves[j]);
             }
-            SunlightPercentage += GetSunPercentage(AllLeaves[i]) / 4f;
+            if (AllLeaves[i].GetComponent<Leaf>().PlayerOwned) SunlightPercentage += GetSunPercentage(AllLeaves[i]) / 4f;
+            
         }
         ResourceTracker.Sunlight = SunlightPercentage;
     }
@@ -437,7 +494,7 @@ public class PlantBuilder : MonoBehaviour
         {
             CurrentLeaf.GetComponent<SpriteRenderer>().color = Color.red;
         }
-        
+
         if (RootVerified && RootIsUnderground)
         {
             CurrentRoot.GetComponent<SpriteRenderer>().color = new Color(0.650f, 0.313f, 0f);

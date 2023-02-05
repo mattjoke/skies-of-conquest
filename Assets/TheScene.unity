@@ -1666,6 +1666,17 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1793774857 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7183137613580870190, guid: 83397a0c165285e4085ec34ae7db45a6, type: 3}
+  m_PrefabInstance: {fileID: 422236599}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1793774849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae2d2b0fba520f8469be69a0d498b81d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1905712032
 GameObject:
   m_ObjectHideFlags: 0
@@ -1815,6 +1826,57 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!1 &1969043190
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1969043192}
+  - component: {fileID: 1969043191}
+  m_Layer: 0
+  m_Name: LeftOpponent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1969043191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1969043190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f5c21d466d89784b9b4821e3ea9015e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ActionCountdown: 0
+  PlantBuilder: {fileID: 1793774857}
+  StemPrefab: {fileID: 9020792754720468916, guid: 66168683066ba6c49ba83eb00403e315, type: 3}
+  RootPrefab: {fileID: 9020792754720468916, guid: dd67391ed01f13a40aaf54d48e3665d4, type: 3}
+  ResourceTracker: {fileID: 1168521286}
+  Height: 10
+  Depth: -10
+--- !u!4 &1969043192
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1969043190}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1.5800056, y: 6.3069124, z: -0.07914135}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2020910561
 GameObject:
   m_ObjectHideFlags: 0
