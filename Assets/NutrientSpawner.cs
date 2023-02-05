@@ -12,7 +12,7 @@ public class NutrientSpawner : MonoBehaviour
     public Resources ResourceTracker;
     public Camera MapCamera;
 
-    float SpawnerDepth = 1;
+    float SpawnerDepth = 5;
 
     void Update()
     {
