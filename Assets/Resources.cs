@@ -68,7 +68,7 @@ public class Resources : MonoBehaviour
         }
         if (Energy < Sunlight - .05f)
         {
-            Energy = Mathf.Max(0, (Sunlight - .05f) * 1.053f);
+            Energy = Mathf.Max(0, Sunlight - .05f);
         }
     }
 
