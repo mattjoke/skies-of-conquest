@@ -66,8 +66,13 @@ MonoBehaviour:
   SkyMask:
     serializedVersion: 2
     m_Bits: 0
+  BranchMask:
+    serializedVersion: 2
+    m_Bits: 0
   ResourceTracker: {fileID: 0}
   RootPrefab: {fileID: 4163292064981428345, guid: 05d11e75ca24eda4182955b6018d4537, type: 3}
+  RootItemPrefab: {fileID: 0}
+  RootItemThickPrefab: {fileID: 0}
   LeafPrefab: {fileID: 1170339450040279846, guid: a034a88d87e36f64c9f1435f6afe017d, type: 3}
   ShadePrefab: {fileID: 1856185718328818782, guid: 307152d195b1d5b43812edbf3fb4a503, type: 3}
   NumberDisplay: {fileID: 2184403302218258717, guid: 967938a4dd0e4304e9113a65d8f2625d, type: 3}
@@ -79,6 +84,7 @@ MonoBehaviour:
   StemClip: {fileID: 8300000, guid: 956961067d6ccad46bf7c1c8d9a31e3e, type: 3}
   DragClip: {fileID: 8300000, guid: 29a9ff861c7f80742b02b8e7392416a3, type: 3}
   DragSource: {fileID: 1793774857}
+  LeafClip: {fileID: 0}
   AllLeaves: []
 --- !u!50 &1793774852
 Rigidbody2D:
@@ -305,7 +311,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 29a9ff861c7f80742b02b8e7392416a3, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.386
   m_Pitch: 1
   Loop: 0
   Mute: 0
