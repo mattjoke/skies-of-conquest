@@ -4,15 +4,8 @@ using UnityEngine;
 
 public class Leaf : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public float LeftEdge;
+    public float RightEdge;
+    public float Height;
+    public GameObject Shade;
 }
